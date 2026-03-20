@@ -884,9 +884,23 @@ const HOROSCOPE_DATA={
   Pisces:{prediction:"Spiritual and creative energies are high. Neptune's influence deepens intuition. Artistic pursuits are favored. Guard against deception in finances. Lucky color: Sea green.",career:6.5,love:8,health:7,finance:6,overall:7}
 };
 
+const RASHI_NAMES={
+  en:['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'],
+  hi:['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुंभ','मीन'],
+  te:['మేషం','వృషభం','మిథునం','కర్కాటకం','సింహం','కన్య','తుల','వృశ్చికం','ధనుస్సు','మకరం','కుంభం','మీనం'],
+  ta:['மேஷம்','ரிஷபம்','மிதுனம்','கடகம்','சிம்மம்','கன்னி','துலாம்','விருச்சிகம்','தனுசு','மகரம்','கும்பம்','மீனம்'],
+  kn:['ಮೇಷ','ವೃಷಭ','ಮಿಥುನ','ಕರ್ಕಾಟಕ','ಸಿಂಹ','ಕನ್ಯಾ','ತುಲಾ','ವೃಶ್ಚಿಕ','ಧನು','ಮಕರ','ಕುಂಭ','ಮೀನ'],
+  ml:['മേടം','ഇടവം','മിഥുനം','കർക്കടകം','ചിങ്ങം','കന്നി','തുലാം','വൃശ്ചികം','ധനു','മകരം','കുംഭം','മീനം'],
+  mr:['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुंभ','मीन'],
+  gu:['મેષ','વૃષભ','મિથુન','કર્ક','સિંહ','કન્યા','તુલા','વૃશ્ચિક','ધનુ','મકર','કુંભ','મીન'],
+  bn:['মেষ','বৃষভ','মিথুন','কর্কট','সিংহ','কন্যা','তুলা','বৃশ্চিক','ধনু','মকর','কুম্ভ','মীন'],
+  pa:['ਮੇਸ਼','ਵ੍ਰਿਸ਼ਭ','ਮਿਥੁਨ','ਕਰਕ','ਸਿੰਘ','ਕੰਨਿਆ','ਤੁਲਾ','ਵ੍ਰਿਸ਼ਚਿਕ','ਧਨੁ','ਮਕਰ','ਕੁੰਭ','ਮੀਨ']
+};
+
 function initRashiGrid(){
   const g=document.getElementById('rashi-grid');
-  g.innerHTML=RASHIS.map((r,i)=>`<div class="rashi-btn" onclick="showHoroscope(${i},this)"><div class="rashi-icon">${r.icon}</div><div class="rashi-name">${r.name}</div><div style="font-size:10px;color:var(--text2);margin-top:1px;font-family:'Noto Sans Devanagari',sans-serif">${r.hindi}</div></div>`).join('');
+  const names=RASHI_NAMES[currentLang]||RASHI_NAMES.en;
+  g.innerHTML=RASHIS.map((r,i)=>`<div class="rashi-btn" onclick="showHoroscope(${i},this)"><div class="rashi-icon">${r.icon}</div><div class="rashi-name">${names[i]}</div></div>`).join('');
 }
 
 function showHoroscope(idx,btn){
@@ -967,10 +981,113 @@ function calculateMatching(){
 }
 
 // ── PANCHANG ──────────────────────────────────────────────────────────────────
-const TITHIS=['Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Purnima/Amavasya'];
-const YOGAS_LIST=['Vishkumbha','Preeti','Ayushman','Saubhagya','Shobhana','Atiganda','Sukarma','Dhriti','Shoola','Ganda','Vriddhi','Dhruva','Vyaghata','Harshana','Vajra','Siddhi','Vyatipata','Variyana','Parigha','Shiva','Siddha','Sadhya','Shubha','Shukla','Brahma','Indra','Vaidhriti'];
-const KARANAS=['Bava','Balava','Kaulava','Taitila','Garaja','Vanija','Vishti','Shakuni','Chatushpada','Nagava','Kimstughna'];
-const MUHURAT_NAMES=['Abhijit','Brahma','Vijaya','Nishita','Godhuli','Amrit Siddhi','Sarvartha Siddhi'];
+const PANCHANG_DATA={
+  en:{
+    tithis:['Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Purnima/Amavasya'],
+    yogas:['Vishkumbha','Preeti','Ayushman','Saubhagya','Shobhana','Atiganda','Sukarma','Dhriti','Shoola','Ganda','Vriddhi','Dhruva','Vyaghata','Harshana','Vajra','Siddhi','Vyatipata','Variyana','Parigha','Shiva','Siddha','Sadhya','Shubha','Shukla','Brahma','Indra','Vaidhriti'],
+    karanas:['Bava','Balava','Kaulava','Taitila','Garaja','Vanija','Vishti','Shakuni','Chatushpada','Nagava','Kimstughna'],
+    muhurats:['Abhijit','Brahma','Vijaya','Nishita','Godhuli','Amrit Siddhi','Sarvartha Siddhi'],
+    paksha_s:'Shukla Paksha',paksha_k:'Krishna Paksha',
+    signs:['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'],
+    weekdays:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+    labels:{tithi:'Tithi',vara:'Vara (Day)',nakshatra:'Nakshatra',yoga:'Yoga',karana:'Karana',paksha:'Paksha',sun_in:'Sun in',moon_in:'Moon in',muhurats:"Today's Muhurats",auspicious:'Auspicious',avoid:'Avoid',neutral:'Neutral'}
+  },
+  hi:{
+    tithis:['प्रतिपदा','द्वितीया','तृतीया','चतुर्थी','पंचमी','षष्ठी','सप्तमी','अष्टमी','नवमी','दशमी','एकादशी','द्वादशी','त्रयोदशी','चतुर्दशी','पूर्णिमा/अमावस्या'],
+    yogas:['विष्कुम्भ','प्रीति','आयुष्मान','सौभाग्य','शोभन','अतिगण्ड','सुकर्मा','धृति','शूल','गण्ड','वृद्धि','ध्रुव','व्याघात','हर्षण','वज्र','सिद्धि','व्यतीपात','वरीयान','परिघ','शिव','सिद्ध','साध्य','शुभ','शुक्ल','ब्रह्म','इन्द्र','वैधृति'],
+    karanas:['बव','बालव','कौलव','तैतिल','गर','वणिज','विष्टि','शकुनि','चतुष्पाद','नाग','किंस्तुघ्न'],
+    muhurats:['अभिजित','ब्रह्म','विजय','निशिता','गोधूलि','अमृत सिद्धि','सर्वार्थ सिद्धि'],
+    paksha_s:'शुक्ल पक्ष',paksha_k:'कृष्ण पक्ष',
+    signs:['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुंभ','मीन'],
+    weekdays:['रविवार','सोमवार','मंगलवार','बुधवार','गुरुवार','शुक्रवार','शनिवार'],
+    labels:{tithi:'तिथि',vara:'वार',nakshatra:'नक्षत्र',yoga:'योग',karana:'करण',paksha:'पक्ष',sun_in:'सूर्य राशि',moon_in:'चंद्र राशि',muhurats:'आज के मुहूर्त',auspicious:'शुभ',avoid:'अशुभ',neutral:'सामान्य'}
+  },
+  te:{
+    tithis:['పాడ్యమి','విదియ','తదియ','చవితి','పంచమి','షష్ఠి','సప్తమి','అష్టమి','నవమి','దశమి','ఏకాదశి','ద్వాదశి','త్రయోదశి','చతుర్దశి','పౌర్ణమి/అమావాస్య'],
+    yogas:['విష్కంభ','ప్రీతి','ఆయుష్మాన్','సౌభాగ్య','శోభన','అతిగండ','సుకర్మ','ధృతి','శూల','గండ','వృద్ధి','ధ్రువ','వ్యాఘాత','హర్షణ','వజ్ర','సిద్ధి','వ్యతీపాత','వరీయాన్','పరిఘ','శివ','సిద్ధ','సాధ్య','శుభ','శుక్ల','బ్రహ్మ','ఇంద్ర','వైధృతి'],
+    karanas:['బవ','బాలవ','కౌలవ','తైతిల','గర','వణిజ','విష్టి','శకుని','చతుష్పాద','నాగ','కింస్తుఘ్న'],
+    muhurats:['అభిజిత్','బ్రహ్మ','విజయ','నిశిత','గోధూళి','అమృత సిద్ధి','సర్వార్థ సిద్ధి'],
+    paksha_s:'శుక్ల పక్షం',paksha_k:'కృష్ణ పక్షం',
+    signs:['మేషం','వృషభం','మిథునం','కర్కాటకం','సింహం','కన్య','తుల','వృశ్చికం','ధనుస్సు','మకరం','కుంభం','మీనం'],
+    weekdays:['ఆదివారం','సోమవారం','మంగళవారం','బుధవారం','గురువారం','శుక్రవారం','శనివారం'],
+    labels:{tithi:'తిథి',vara:'వారం',nakshatra:'నక్షత్రం',yoga:'యోగం',karana:'కరణం',paksha:'పక్షం',sun_in:'సూర్యుడు',moon_in:'చంద్రుడు',muhurats:'నేటి ముహూర్తాలు',auspicious:'శుభం',avoid:'అశుభం',neutral:'సాధారణం'}
+  },
+  ta:{
+    tithis:['பிரதமை','துவிதியை','திருதியை','சதுர்த்தி','பஞ்சமி','சஷ்டி','சப்தமி','அஷ்டமி','நவமி','தசமி','ஏகாதசி','துவாதசி','திரயோதசி','சதுர்தசி','பௌர்ணமி/அமாவாசை'],
+    yogas:['விஷ்கம்ப','ப்ரீதி','ஆயுஷ்மான்','சௌபாக்ய','சோபன','அதிகண்ட','சுகர்ம','த்ருதி','சூல','கண்ட','வ்ருத்தி','த்ருவ','வ்யாகாத','ஹர்ஷண','வஜ்ர','சித்தி','வ்யதீபாத','வரீயான்','பரிக','சிவ','சித்த','சாத்ய','சுப','சுக்ல','ப்ரஹ்ம','இந்த்ர','வைத்ருதி'],
+    karanas:['பவ','பாலவ','கௌலவ','தைதில','கர','வணிஜ','விஷ்டி','சகுனி','சதுஷ்பாத','நாக','கிம்ஸ்துக்ன'],
+    muhurats:['அபிஜித்','ப்ரஹ்ம','விஜய','நிசித','கோதூளி','அம்ருத சித்தி','சர்வார்த்த சித்தி'],
+    paksha_s:'சுக்ல பக்ஷம்',paksha_k:'க்ருஷ்ண பக்ஷம்',
+    signs:['மேஷம்','ரிஷபம்','மிதுனம்','கடகம்','சிம்மம்','கன்னி','துலாம்','விருச்சிகம்','தனுசு','மகரம்','கும்பம்','மீனம்'],
+    weekdays:['ஞாயிறு','திங்கள்','செவ்வாய்','புதன்','வியாழன்','வெள்ளி','சனி'],
+    labels:{tithi:'திதி',vara:'வாரம்',nakshatra:'நட்சத்திரம்',yoga:'யோகம்',karana:'கரணம்',paksha:'பக்ஷம்',sun_in:'சூரியன்',moon_in:'சந்திரன்',muhurats:'இன்றைய முகூர்த்தங்கள்',auspicious:'சுபம்',avoid:'அசுபம்',neutral:'சாதாரணம்'}
+  },
+  kn:{
+    tithis:['ಪ್ರತಿಪದ','ದ್ವಿತೀಯ','ತೃತೀಯ','ಚತುರ್ಥಿ','ಪಂಚಮಿ','ಷಷ್ಠಿ','ಸಪ್ತಮಿ','ಅಷ್ಟಮಿ','ನವಮಿ','ದಶಮಿ','ಏಕಾದಶಿ','ದ್ವಾದಶಿ','ತ್ರಯೋದಶಿ','ಚತುರ್ದಶಿ','ಹುಣ್ಣಿಮೆ/ಅಮಾವಾಸ್ಯೆ'],
+    yogas:['ವಿಷ್ಕಂಭ','ಪ್ರೀತಿ','ಆಯುಷ್ಮಾನ್','ಸೌಭಾಗ್ಯ','ಶೋಭನ','ಅತಿಗಂಡ','ಸುಕರ್ಮ','ಧೃತಿ','ಶೂಲ','ಗಂಡ','ವೃದ್ಧಿ','ಧ್ರುವ','ವ್ಯಾಘಾತ','ಹರ್ಷಣ','ವಜ್ರ','ಸಿದ್ಧಿ','ವ್ಯತೀಪಾತ','ವರೀಯಾನ್','ಪರಿಘ','ಶಿವ','ಸಿದ್ಧ','ಸಾಧ್ಯ','ಶುಭ','ಶುಕ್ಲ','ಬ್ರಹ್ಮ','ಇಂದ್ರ','ವೈಧೃತಿ'],
+    karanas:['ಬವ','ಬಾಲವ','ಕೌಲವ','ತೈತಿಲ','ಗರ','ವಣಿಜ','ವಿಷ್ಟಿ','ಶಕುನಿ','ಚತುಷ್ಪಾದ','ನಾಗ','ಕಿಂಸ್ತುಘ್ನ'],
+    muhurats:['ಅಭಿಜಿತ್','ಬ್ರಹ್ಮ','ವಿಜಯ','ನಿಶಿತ','ಗೋಧೂಳಿ','ಅಮೃತ ಸಿದ್ಧಿ','ಸರ್ವಾರ್ಥ ಸಿದ್ಧಿ'],
+    paksha_s:'ಶುಕ್ಲ ಪಕ್ಷ',paksha_k:'ಕೃಷ್ಣ ಪಕ್ಷ',
+    signs:['ಮೇಷ','ವೃಷಭ','ಮಿಥುನ','ಕರ್ಕಾಟಕ','ಸಿಂಹ','ಕನ್ಯಾ','ತುಲಾ','ವೃಶ್ಚಿಕ','ಧನು','ಮಕರ','ಕುಂಭ','ಮೀನ'],
+    weekdays:['ಭಾನುವಾರ','ಸೋಮವಾರ','ಮಂಗಳವಾರ','ಬುಧವಾರ','ಗುರುವಾರ','ಶುಕ್ರವಾರ','ಶನಿವಾರ'],
+    labels:{tithi:'ತಿಥಿ',vara:'ವಾರ',nakshatra:'ನಕ್ಷತ್ರ',yoga:'ಯೋಗ',karana:'ಕರಣ',paksha:'ಪಕ್ಷ',sun_in:'ಸೂರ್ಯ',moon_in:'ಚಂದ್ರ',muhurats:'ಇಂದಿನ ಮುಹೂರ್ತಗಳು',auspicious:'ಶುಭ',avoid:'ಅಶುಭ',neutral:'ಸಾಧಾರಣ'}
+  },
+  ml:{
+    tithis:['പ്രതിപദ','ദ്വിതീയ','തൃതീയ','ചതുർഥി','പഞ്ചമി','ഷഷ്ഠി','സപ്തമി','അഷ്ടമി','നവമി','ദശമി','ഏകാദശി','ദ്വാദശി','ത്രയോദശി','ചതുർദശി','പൗർണ്ണമി/അമാവാസി'],
+    yogas:['വിഷ്കംഭ','പ്രീതി','ആയുഷ്മാൻ','സൗഭാഗ്യ','ശോഭന','അതിഗണ്ഡ','സുകർമ','ധൃതി','ശൂല','ഗണ്ഡ','വൃദ്ധി','ധ്രുവ','വ്യാഘാത','ഹർഷണ','വജ്ര','സിദ്ധി','വ്യതീപാത','വരീയാൻ','പരിഘ','ശിവ','സിദ്ധ','സാധ്യ','ശുഭ','ശുക്ല','ബ്രഹ്മ','ഇന്ദ്ര','വൈധൃതി'],
+    karanas:['ബവ','ബാലവ','കൗലവ','തൈതില','ഗര','വണിജ','വിഷ്ടി','ശകുനി','ചതുഷ്പാദ','നാഗ','കിംസ്തുഘ്ന'],
+    muhurats:['അഭിജിത്','ബ്രഹ്മ','വിജയ','നിശിത','ഗോധൂളി','അമൃത സിദ്ധി','സർവാർഥ സിദ്ധി'],
+    paksha_s:'ശുക്ല പക്ഷം',paksha_k:'കൃഷ്ണ പക്ഷം',
+    signs:['മേടം','ഇടവം','മിഥുനം','കർക്കടകം','ചിങ്ങം','കന്നി','തുലാം','വൃശ്ചികം','ധനു','മകരം','കുംഭം','മീനം'],
+    weekdays:['ഞായർ','തിങ്കൾ','ചൊവ്വ','ബുധൻ','വ്യാഴം','വെള്ളി','ശനി'],
+    labels:{tithi:'തിഥി',vara:'വാരം',nakshatra:'നക്ഷത്രം',yoga:'യോഗം',karana:'കരണം',paksha:'പക്ഷം',sun_in:'സൂര്യൻ',moon_in:'ചന്ദ്രൻ',muhurats:'ഇന്നത്തെ മുഹൂർത്തങ്ങൾ',auspicious:'ശുഭം',avoid:'അശുഭം',neutral:'സാധാരണ'}
+  },
+  mr:{
+    tithis:['प्रतिपदा','द्वितीया','तृतीया','चतुर्थी','पंचमी','षष्ठी','सप्तमी','अष्टमी','नवमी','दशमी','एकादशी','द्वादशी','त्रयोदशी','चतुर्दशी','पौर्णिमा/अमावस्या'],
+    yogas:['विष्कुंभ','प्रीती','आयुष्मान','सौभाग्य','शोभन','अतिगंड','सुकर्मा','धृती','शूल','गंड','वृद्धि','ध्रुव','व्याघात','हर्षण','वज्र','सिद्धि','व्यतीपात','वरीयान','परिघ','शिव','सिद्ध','साध्य','शुभ','शुक्ल','ब्रह्म','इंद्र','वैधृती'],
+    karanas:['बव','बालव','कौलव','तैतिल','गर','वणिज','विष्टि','शकुनि','चतुष्पाद','नाग','किंस्तुघ्न'],
+    muhurats:['अभिजित','ब्रह्म','विजय','निशिता','गोधुळी','अमृत सिद्धी','सर्वार्थ सिद्धी'],
+    paksha_s:'शुक्ल पक्ष',paksha_k:'कृष्ण पक्ष',
+    signs:['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुंभ','मीन'],
+    weekdays:['रविवार','सोमवार','मंगळवार','बुधवार','गुरुवार','शुक्रवार','शनिवार'],
+    labels:{tithi:'तिथी',vara:'वार',nakshatra:'नक्षत्र',yoga:'योग',karana:'करण',paksha:'पक्ष',sun_in:'सूर्य राशी',moon_in:'चंद्र राशी',muhurats:'आजचे मुहूर्त',auspicious:'शुभ',avoid:'अशुभ',neutral:'सामान्य'}
+  },
+  gu:{
+    tithis:['પ્રતિપદા','બીજ','ત્રીજ','ચોથ','પાંચમ','છઠ','સાતમ','આઠમ','નોમ','દસમ','અગિયારસ','બારસ','તેરસ','ચૌદસ','પૂનમ/અમાસ'],
+    yogas:['વિષ્કુંભ','પ્રીતિ','આયુષ્માન','સૌભાગ્ય','શોભન','અતિગંડ','સુકર્મ','ધ્રૃતિ','શૂળ','ગંડ','વૃધ્ધિ','ધ્રુવ','વ્યાઘાત','હર્ષણ','વજ્ર','સિધ્ધિ','વ્યતીપાત','વરીયાન','પરિઘ','શિવ','સિધ્ધ','સાધ્ય','શુભ','શુક્લ','બ્રહ્મ','ઇન્દ્ર','વૈધ્રૃતિ'],
+    karanas:['બવ','બાલવ','કૌલવ','તૈતિલ','ગર','વણિજ','વિષ્ટિ','શકુનિ','ચતુષ્પાદ','નાગ','કિંસ્તુઘ્ન'],
+    muhurats:['અભિજિત','બ્રહ્મ','વિજય','નિશિત','ગોધૂળિ','અમૃત સિદ્ધિ','સર્વાર્થ સિદ્ધિ'],
+    paksha_s:'શુક્લ પક્ષ',paksha_k:'કૃષ્ણ પક્ષ',
+    signs:['મેષ','વૃષભ','મિથુન','કર્ક','સિંહ','કન્યા','તુલા','વૃશ્ચિક','ધનુ','મકર','કુંભ','મીન'],
+    weekdays:['રવિવાર','સોમવાર','મંગળવાર','બુધવાર','ગુરુવાર','શુક્રવાર','શનિવાર'],
+    labels:{tithi:'તિથિ',vara:'વાર',nakshatra:'નક્ષત્ર',yoga:'યોગ',karana:'કરણ',paksha:'પક્ષ',sun_in:'સૂર્ય રાશિ',moon_in:'ચંદ્ર રાશિ',muhurats:'આજના મુહૂર્ત',auspicious:'શુભ',avoid:'અશુભ',neutral:'સામાન્ય'}
+  },
+  bn:{
+    tithis:['প্রতিপদ','দ্বিতীয়া','তৃতীয়া','চতুর্থী','পঞ্চমী','ষষ্ঠী','সপ্তমী','অষ্টমী','নবমী','দশমী','একাদশী','দ্বাদশী','ত্রয়োদশী','চতুর্দশী','পূর্ণিমা/অমাবস্যা'],
+    yogas:['বিষ্কম্ভ','প্রীতি','আয়ুষ্মান','সৌভাগ্য','শোভন','অতিগণ্ড','সুকর্মা','ধৃতি','শূল','গণ্ড','বৃদ্ধি','ধ্রুব','ব্যাঘাত','হর্ষণ','বজ্র','সিদ্ধি','ব্যতীপাত','বরীয়ান','পরিঘ','শিব','সিদ্ধ','সাধ্য','শুভ','শুক্ল','ব্রহ্ম','ইন্দ্র','বৈধৃতি'],
+    karanas:['বব','বালব','কৌলব','তৈতিল','গর','বণিজ','বিষ্টি','শকুনি','চতুষ্পাদ','নাগ','কিংস্তুঘ্ন'],
+    muhurats:['অভিজিৎ','ব্রহ্ম','বিজয়','নিশিতা','গোধূলি','অমৃত সিদ্ধি','সর্বার্থ সিদ্ধি'],
+    paksha_s:'শুক্ল পক্ষ',paksha_k:'কৃষ্ণ পক্ষ',
+    signs:['মেষ','বৃষভ','মিথুন','কর্কট','সিংহ','কন্যা','তুলা','বৃশ্চিক','ধনু','মকর','কুম্ভ','মীন'],
+    weekdays:['রবিবার','সোমবার','মঙ্গলবার','বুধবার','বৃহস্পতিবার','শুক্রবার','শনিবার'],
+    labels:{tithi:'তিথি',vara:'বার',nakshatra:'নক্ষত্র',yoga:'যোগ',karana:'করণ',paksha:'পক্ষ',sun_in:'সূর্য রাশি',moon_in:'চন্দ্র রাশি',muhurats:'আজকের মুহূর্ত',auspicious:'শুভ',avoid:'অশুভ',neutral:'সাধারণ'}
+  },
+  pa:{
+    tithis:['ਪ੍ਰਤਿਪਦਾ','ਦੂਜ','ਤੀਜ','ਚੌਥ','ਪੰਚਮੀ','ਛੇਵੀਂ','ਸੱਤਮੀ','ਅੱਠਮੀ','ਨੌਮੀ','ਦਸਮੀ','ਇਕਾਦਸ਼ੀ','ਬਾਰਸ','ਤੇਰਸ','ਚੌਦਸ','ਪੂਰਨਮਾਸ਼ੀ/ਮੱਸਿਆ'],
+    yogas:['ਵਿਸ਼ਕੁੰਭ','ਪ੍ਰੀਤਿ','ਆਯੁਸ਼ਮਾਨ','ਸੌਭਾਗਯ','ਸ਼ੋਭਨ','ਅਤਿਗੰਡ','ਸੁਕਰਮਾ','ਧ੍ਰਿਤਿ','ਸ਼ੂਲ','ਗੰਡ','ਵ੍ਰਿੱਧਿ','ਧ੍ਰੁਵ','ਵਯਾਘਾਤ','ਹਰਸ਼ਨ','ਵਜ੍ਰ','ਸਿੱਧਿ','ਵਯਤੀਪਾਤ','ਵਰੀਯਾਨ','ਪਰਿਘ','ਸ਼ਿਵ','ਸਿੱਧ','ਸਾਧਯ','ਸ਼ੁਭ','ਸ਼ੁਕਲ','ਬ੍ਰਹਮ','ਇੰਦ੍ਰ','ਵੈਧ੍ਰਿਤਿ'],
+    karanas:['ਬਵ','ਬਾਲਵ','ਕੌਲਵ','ਤੈਤਿਲ','ਗਰ','ਵਣਿਜ','ਵਿਸ਼ਟਿ','ਸ਼ਕੁਨਿ','ਚਤੁਸ਼੍ਪਾਦ','ਨਾਗ','ਕਿੰਸ੍ਤੁਘ੍ਨ'],
+    muhurats:['ਅਭਿਜਿਤ','ਬ੍ਰਹਮ','ਵਿਜੈ','ਨਿਸ਼ਿਤਾ','ਗੋਧੂਲਿ','ਅੰਮ੍ਰਿਤ ਸਿੱਧੀ','ਸਰਵਾਰਥ ਸਿੱਧੀ'],
+    paksha_s:'ਸ਼ੁਕਲ ਪੱਖ',paksha_k:'ਕ੍ਰਿਸ਼ਨ ਪੱਖ',
+    signs:['ਮੇਸ਼','ਵ੍ਰਿਸ਼ਭ','ਮਿਥੁਨ','ਕਰਕ','ਸਿੰਘ','ਕੰਨਿਆ','ਤੁਲਾ','ਵ੍ਰਿਸ਼ਚਿਕ','ਧਨੁ','ਮਕਰ','ਕੁੰਭ','ਮੀਨ'],
+    weekdays:['ਐਤਵਾਰ','ਸੋਮਵਾਰ','ਮੰਗਲਵਾਰ','ਬੁੱਧਵਾਰ','ਵੀਰਵਾਰ','ਸ਼ੁੱਕਰਵਾਰ','ਸ਼ਨੀਵਾਰ'],
+    labels:{tithi:'ਤਿਥਿ',vara:'ਵਾਰ',nakshatra:'ਨਕਸ਼ੱਤਰ',yoga:'ਯੋਗ',karana:'ਕਰਣ',paksha:'ਪੱਖ',sun_in:'ਸੂਰਜ ਰਾਸ਼ੀ',moon_in:'ਚੰਦ ਰਾਸ਼ੀ',muhurats:'ਅੱਜ ਦੇ ਮੁਹੂਰਤ',auspicious:'ਸ਼ੁਭ',avoid:'ਅਸ਼ੁਭ',neutral:'ਸਾਧਾਰਣ'}
+  }
+};
+
+function getPD(){
+  const lang=currentLang;
+  return PANCHANG_DATA[lang]||PANCHANG_DATA.en;
+}
 
 function updatePanchang(){
   const input=document.getElementById('panchang-date-input');
@@ -978,36 +1095,54 @@ function updatePanchang(){
   const date=new Date(dateStr);
   const jd=toJD(dateStr,'12:00');
   const{positions}=calcPlanets(jd);
-  const T=(jd-2451545.0)/36525;
   const moonLon=positions.Moon;
   const sunLon=positions.Sun;
   const tithiAngle=((moonLon-sunLon)+360)%360;
   const tithiNum=Math.floor(tithiAngle/12)%15;
-  const paksha=tithiAngle<180?'Shukla Paksha':'Krishna Paksha';
+  const pd=getPD();
+  const paksha=tithiAngle<180?pd.paksha_s:pd.paksha_k;
   const{nakshatra}=getNakshatra(moonLon);
+  const nakshatraIdx=NAKSHATRAS_LIST.indexOf(nakshatra);
+  const localNakshatra=pd.yogas?NAKSHATRAS_LIST[nakshatraIdx]:(nakshatra);
+  // Get localized nakshatra
+  const NAKSHATRAS_LOCAL={
+    hi:['अश्विनी','भरणी','कृत्तिका','रोहिणी','मृगशिरा','आर्द्रा','पुनर्वसु','पुष्य','आश्लेषा','मघा','पूर्वाफाल्गुनी','उत्तराफाल्गुनी','हस्त','चित्रा','स्वाती','विशाखा','अनुराधा','ज्येष्ठा','मूल','पूर्वाषाढा','उत्तराषाढा','श्रवण','धनिष्ठा','शतभिषा','पूर्वाभाद्रपद','उत्तराभाद्रपद','रेवती'],
+    te:['అశ్వని','భరణి','కృత్తిక','రోహిణి','మృగశిర','ఆర్ద్ర','పునర్వసు','పుష్యమి','ఆశ్లేష','మఖ','పూర్వఫల్గుణి','ఉత్తరఫల్గుణి','హస్త','చిత్ర','స్వాతి','విశాఖ','అనురాధ','జ్యేష్ఠ','మూల','పూర్వాషాఢ','ఉత్తరాషాఢ','శ్రవణ','ధనిష్ఠ','శతభిష','పూర్వాభాద్ర','ఉత్తరాభాద్ర','రేవతి'],
+    ta:['அஸ்வினி','பரணி','கார்த்திகை','ரோகிணி','மிருகசீரிடம்','திருவாதிரை','புனர்பூசம்','பூசம்','ஆயில்யம்','மகம்','பூரம்','உத்திரம்','ஹஸ்தம்','சித்திரை','சுவாதி','விசாகம்','அனுஷம்','கேட்டை','மூலம்','பூராடம்','உத்திராடம்','திருவோணம்','அவிட்டம்','சதயம்','பூரட்டாதி','உத்திரட்டாதி','ரேவதி'],
+    kn:['ಅಶ್ವಿನಿ','ಭರಣಿ','ಕೃತ್ತಿಕಾ','ರೋಹಿಣಿ','ಮೃಗಶಿರ','ಆರ್ದ್ರ','ಪುನರ್ವಸು','ಪುಷ್ಯ','ಆಶ್ಲೇಷ','ಮಖ','ಪೂರ್ವಫಲ್ಗುಣಿ','ಉತ್ತರಫಲ್ಗುಣಿ','ಹಸ್ತ','ಚಿತ್ರ','ಸ್ವಾತಿ','ವಿಶಾಖ','ಅನುರಾಧ','ಜ್ಯೇಷ್ಠ','ಮೂಲ','ಪೂರ್ವಾಷಾಢ','ಉತ್ತರಾಷಾಢ','ಶ್ರವಣ','ಧನಿಷ್ಠ','ಶತಭಿಷ','ಪೂರ್ವಭಾದ್ರ','ಉತ್ತರಭಾದ್ರ','ರೇವತಿ'],
+    ml:['അശ്വതി','ഭരണി','കാർത്തിക','രോഹിണി','മകയിരം','തിരുവാതിര','പുനർതം','പൂയം','ആയില്യം','മകം','പൂരം','ഉത്രം','അത്തം','ചിത്തിര','ചോതി','വിശാഖം','അനിഴം','തൃക്കേട്ട','മൂലം','പൂരാടം','ഉത്രാടം','തിരുവോണം','അവിട്ടം','ചതയം','പൂരുരുട്ടാതി','ഉത്തൃട്ടാതി','രേവതി'],
+    mr:['अश्विनी','भरणी','कृत्तिका','रोहिणी','मृगशीर्ष','आर्द्रा','पुनर्वसु','पुष्य','आश्लेषा','मघा','पूर्वाफाल्गुनी','उत्तराफाल्गुनी','हस्त','चित्रा','स्वाती','विशाखा','अनुराधा','ज्येष्ठा','मूल','पूर्वाषाढा','उत्तराषाढा','श्रवण','धनिष्ठा','शतभिषा','पूर्वाभाद्रपद','उत्तराभाद्रपद','रेवती'],
+    gu:['અશ્વિની','ભરણી','કૃત્તિકા','રોહિણી','મૃગશીર','આર્દ્રા','પુનર્વસુ','પુષ્ય','આશ્લેષા','મઘા','પૂર્વાફાલ્ગુની','ઉત્તરાફાલ્ગુની','હસ્ત','ચિત્રા','સ્વાતી','વિશાખા','અનુરાધા','જ્યેષ્ઠા','મૂળ','પૂર્વાષાઢા','ઉત્તરાષાઢા','શ્રવણ','ધનિષ્ઠા','શતભિષા','પૂર્વાભાદ્રપદ','ઉત્તરાભાદ્રપદ','રેવતી'],
+    bn:['অশ্বিনী','ভরণী','কৃত্তিকা','রোহিণী','মৃগশিরা','আর্দ্রা','পুনর্বসু','পুষ্য','আশ্লেষা','মঘা','পূর্বফাল্গুনী','উত্তরফাল্গুনী','হস্ত','চিত্রা','স্বাতী','বিশাখা','অনুরাধা','জ্যেষ্ঠা','মূল','পূর্বাষাঢা','উত্তরাষাঢা','শ্রবণা','ধনিষ্ঠা','শতভিষা','পূর্বভাদ্রপদ','উত্তরভাদ্রপদ','রেবতী'],
+    pa:['ਅਸ਼ਵਿਨੀ','ਭਰਣੀ','ਕ੍ਰਿੱਤਿਕਾ','ਰੋਹਿਣੀ','ਮ੍ਰਿਗਸ਼ਿਰਾ','ਆਰਦ੍ਰਾ','ਪੁਨਰਵਸੁ','ਪੁਸ਼੍ਯ','ਆਸ਼੍ਲੇਸ਼ਾ','ਮਘਾ','ਪੂਰਵਾਫਾਲਗੁਨੀ','ਉੱਤਰਾਫਾਲਗੁਨੀ','ਹਸਤ','ਚਿਤ੍ਰਾ','ਸਵਾਤੀ','ਵਿਸ਼ਾਖਾ','ਅਨੁਰਾਧਾ','ਜ੍ਯੇਸ਼੍ਠਾ','ਮੂਲ','ਪੂਰਵਾਸ਼ਾਢਾ','ਉੱਤਰਾਸ਼ਾਢਾ','ਸ਼੍ਰਵਣ','ਧਨਿਸ਼੍ਠਾ','ਸ਼ਤਭਿਸ਼ਾ','ਪੂਰਵਾਭਾਦ੍ਰਪਦ','ਉੱਤਰਾਭਾਦ੍ਰਪਦ','ਰੇਵਤੀ']
+  };
+  const nakshatraName=(NAKSHATRAS_LOCAL[currentLang]&&NAKSHATRAS_LOCAL[currentLang][nakshatraIdx])||nakshatra;
   const yogaIdx=Math.floor((moonLon+sunLon)/360*27)%27;
   const karanaIdx=Math.floor(tithiAngle/6)%11;
-  const weekday=date.toLocaleDateString('en-IN',{weekday:'long'});
-  const vara=weekday;
-  document.getElementById('panchang-date').textContent=date.toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-  // Generate muhurats
-  const muhurats=MUHURAT_NAMES.map((m,i)=>{
+  const dayIdx=date.getDay();
+  const vara=pd.weekdays[dayIdx];
+  const sunSign=pd.signs[Math.floor(lonToSign(sunLon).sign==SIGNS[0]?0:SIGNS.indexOf(lonToSign(sunLon).sign))];
+  const moonSign=pd.signs[SIGNS.indexOf(lonToSign(moonLon).sign)];
+  const lb=pd.labels;
+  const locale=currentLang==='hi'||currentLang==='mr'?'hi-IN':currentLang==='ta'?'ta-IN':currentLang==='te'?'te-IN':currentLang==='kn'?'kn-IN':currentLang==='ml'?'ml-IN':'en-IN';
+  document.getElementById('panchang-date').textContent=date.toLocaleDateString(locale,{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const muhurats=pd.muhurats.map((m,i)=>{
     const h=6+i*2,type=i%3===0?'good':i%3===1?'ok':'avoid';
     return{name:m,time:`${String(h).padStart(2,'0')}:${i%2===0?'00':'24'} - ${String(h+1).padStart(2,'0')}:${i%2===0?'36':'00'}`,type};
   });
   document.getElementById('panchang-content').innerHTML=`
   <div class="panchang-grid">
-    <div class="panchang-item"><div class="panchang-key">Tithi</div><div class="panchang-val">${TITHIS[tithiNum]} (${paksha})</div></div>
-    <div class="panchang-item"><div class="panchang-key">Vara (Day)</div><div class="panchang-val">${vara}</div></div>
-    <div class="panchang-item"><div class="panchang-key">Nakshatra</div><div class="panchang-val">${nakshatra}</div></div>
-    <div class="panchang-item"><div class="panchang-key">Yoga</div><div class="panchang-val">${YOGAS_LIST[yogaIdx]}</div></div>
-    <div class="panchang-item"><div class="panchang-key">Karana</div><div class="panchang-val">${KARANAS[karanaIdx]}</div></div>
-    <div class="panchang-item"><div class="panchang-key">Paksha</div><div class="panchang-val">${paksha}</div></div>
-    <div class="panchang-item"><div class="panchang-key">Sun in</div><div class="panchang-val">${lonToSign(sunLon).sign}</div></div>
-    <div class="panchang-item"><div class="panchang-key">Moon in</div><div class="panchang-val">${lonToSign(moonLon).sign}</div></div>
+    <div class="panchang-item"><div class="panchang-key">${lb.tithi}</div><div class="panchang-val">${pd.tithis[tithiNum]} (${paksha})</div></div>
+    <div class="panchang-item"><div class="panchang-key">${lb.vara}</div><div class="panchang-val">${vara}</div></div>
+    <div class="panchang-item"><div class="panchang-key">${lb.nakshatra}</div><div class="panchang-val">${nakshatraName}</div></div>
+    <div class="panchang-item"><div class="panchang-key">${lb.yoga}</div><div class="panchang-val">${pd.yogas[yogaIdx]}</div></div>
+    <div class="panchang-item"><div class="panchang-key">${lb.karana}</div><div class="panchang-val">${pd.karanas[karanaIdx]}</div></div>
+    <div class="panchang-item"><div class="panchang-key">${lb.paksha}</div><div class="panchang-val">${paksha}</div></div>
+    <div class="panchang-item"><div class="panchang-key">${lb.sun_in}</div><div class="panchang-val">${pd.signs[SIGNS.indexOf(lonToSign(sunLon).sign)]}</div></div>
+    <div class="panchang-item"><div class="panchang-key">${lb.moon_in}</div><div class="panchang-val">${pd.signs[SIGNS.indexOf(lonToSign(moonLon).sign)]}</div></div>
   </div>
   <hr class="divider"/>
-  <div class="section-label">Today's Muhurats</div>
+  <div class="section-label">${lb.muhurats}</div>
   <div class="muhurat-list">
     ${muhurats.map(m=>`<div class="muhurat-item"><div><div class="muhurat-name">${m.name}</div><div style="font-size:12px;color:var(--text2)">Approx IST</div></div><div style="display:flex;align-items:center;gap:10px"><span style="font-size:13px">${m.time}</span><span class="muhurat-badge ${m.type==='good'?'badge-good':m.type==='avoid'?'badge-avoid':'badge-ok'}">${m.type==='good'?'Auspicious':m.type==='avoid'?'Avoid':'Neutral'}</span></div></div>`).join('')}
   </div>`;
@@ -1155,6 +1290,8 @@ const LANGUAGES=[
 const TRANSLATIONS={
   en:{
     select_language:'Select Language',home:'Home',language:'Language',sign_out:'Sign Out',
+    sun:'Sun',moon:'Moon',mars:'Mars',mercury:'Mercury',jupiter:'Jupiter',venus:'Venus',saturn:'Saturn',rahu:'Rahu',ketu:'Ketu',
+    lagna:'Lagna',house:'House',degree:'Degree',strength:'Strength',retrograde:'Retro',
     hero_badge:'Vedic Astrology Platform',choose_feature:'Choose a Feature',
     feat_kundli:'Kundli',feat_horoscope:'Daily Horoscope',feat_matching:'Kundli Matching',
     feat_panchang:'Panchang',feat_numerology:'Numerology',feat_chat:'AI Astrologer',
@@ -1168,6 +1305,8 @@ const TRANSLATIONS={
   },
   hi:{
     select_language:'भाषा चुनें',home:'होम',language:'भाषा',sign_out:'साइन आउट',
+    sun:'सूर्य',moon:'चंद्र',mars:'मंगल',mercury:'बुध',jupiter:'गुरु',venus:'शुक्र',saturn:'शनि',rahu:'राहु',ketu:'केतु',
+    lagna:'लग्न',house:'भाव',degree:'अंश',strength:'बल',retrograde:'वक्री',
     hero_badge:'वैदिक ज्योतिष मंच',choose_feature:'सुविधा चुनें',
     feat_kundli:'कुंडली',feat_horoscope:'दैनिक राशिफल',feat_matching:'कुंडली मिलान',
     feat_panchang:'पंचांग',feat_numerology:'अंकज्योतिष',feat_chat:'AI ज्योतिषी',
@@ -1181,6 +1320,8 @@ const TRANSLATIONS={
   },
   te:{
     select_language:'భాషను ఎంచుకోండి',home:'హోమ్',language:'భాష',sign_out:'సైన్ అవుట్',
+    sun:'సూర్యుడు',moon:'చంద్రుడు',mars:'కుజుడు',mercury:'బుధుడు',jupiter:'గురుడు',venus:'శుక్రుడు',saturn:'శని',rahu:'రాహువు',ketu:'కేతువు',
+    lagna:'లగ్నం',house:'భావం',degree:'అంశ',strength:'బలం',retrograde:'వక్ర',
     hero_badge:'వైదిక జ్యోతిష్య వేదిక',choose_feature:'ఫీచర్ ఎంచుకోండి',
     feat_kundli:'కుండలి',feat_horoscope:'రోజువారీ రాశిఫలాలు',feat_matching:'కుండలి మ్యాచింగ్',
     feat_panchang:'పంచాంగం',feat_numerology:'అంకశాస్త్రం',feat_chat:'AI జ్యోతిష్యుడు',
@@ -1194,6 +1335,8 @@ const TRANSLATIONS={
   },
   ta:{
     select_language:'மொழியைத் தேர்ந்தெடுக்கவும்',home:'முகப்பு',language:'மொழி',sign_out:'வெளியேறு',
+    sun:'சூரியன்',moon:'சந்திரன்',mars:'செவ்வாய்',mercury:'புதன்',jupiter:'குரு',venus:'சுக்கிரன்',saturn:'சனி',rahu:'ராகு',ketu:'கேது',
+    lagna:'லக்னம்',house:'பாவம்',degree:'பாகை',strength:'பலம்',retrograde:'வக்கிரம்',
     hero_badge:'வேத ஜோதிட தளம்',choose_feature:'அம்சத்தைத் தேர்ந்தெடுக்கவும்',
     feat_kundli:'ஜாதகம்',feat_horoscope:'தினசரி ராசிபலன்',feat_matching:'ஜாதக பொருத்தம்',
     feat_panchang:'பஞ்சாங்கம்',feat_numerology:'எண்ணியல்',feat_chat:'AI ஜோதிடர்',
@@ -1284,6 +1427,10 @@ function applyLang(code){
     const label=document.getElementById('current-lang-label');
     if(label)label.textContent=lang.name;
   }
+  // Refresh panchang if visible
+  if(document.getElementById('page-panchang')?.classList.contains('active'))updatePanchang();
+  // Refresh horoscope rashi grid labels
+  if(typeof initRashiGrid==='function')initRashiGrid();
   // Update lang list selection
   document.querySelectorAll('.lang-item').forEach(el=>{
     const isSelected=el.getAttribute('data-lang')===code;
