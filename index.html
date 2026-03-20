@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>AstroIndia — Vedic Astrology & AI Insights</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+Tamil:wght@400;600&family=Noto+Sans+Telugu:wght@400;600&family=Noto+Sans+Kannada:wght@400;600&family=Noto+Sans+Malayalam:wght@400;600&family=Noto+Sans+Bengali:wght@400;600&family=Noto+Sans+Gujarati:wght@400;600&family=Noto+Sans+Gurmukhi:wght@400;600&family=Noto+Sans+Odia:wght@400;600&display=swap" rel="stylesheet"/>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -248,6 +248,34 @@ input:focus,select:focus{border-color:var(--text);background:var(--surface)}
 .empty-state{text-align:center;padding:48px 24px;color:var(--text2)}
 .empty-icon{font-size:40px;margin-bottom:12px}
 .empty-text{font-size:15px}
+
+/* LANGUAGE */
+.lang-overlay{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.4);backdrop-filter:blur(4px);align-items:flex-end;justify-content:center}
+.lang-overlay.open{display:flex}
+.lang-sheet{background:var(--surface);border-radius:20px 20px 0 0;width:100%;max-width:480px;max-height:80vh;overflow:hidden;display:flex;flex-direction:column;animation:slideUp .25s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.lang-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.lang-header h3{font-size:16px}
+.lang-close{width:32px;height:32px;border-radius:50%;border:none;background:var(--bg2);cursor:pointer;font-size:16px;display:grid;place-items:center}
+.lang-list{overflow-y:auto;padding:12px}
+.lang-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;cursor:pointer;transition:all .15s;border:1.5px solid transparent}
+.lang-item:hover{background:var(--bg2)}
+.lang-item.selected{border-color:var(--text);background:var(--bg2)}
+.lang-native{font-size:18px;font-weight:600;min-width:32px}
+.lang-info{flex:1}
+.lang-name{font-size:14px;font-weight:500}
+.lang-region{font-size:11px;color:var(--text2)}
+.lang-check{font-size:16px;color:var(--text)}
+body.lang-hi,.lang-hi input,.lang-hi select,.lang-hi button,.lang-hi p,.lang-hi label,.lang-hi span,.lang-hi div{font-family:'Noto Sans Devanagari','DM Sans',sans-serif!important}
+body.lang-ta,.lang-ta input,.lang-ta select{font-family:'Noto Sans Tamil','DM Sans',sans-serif!important}
+body.lang-te,.lang-te input,.lang-te select{font-family:'Noto Sans Telugu','DM Sans',sans-serif!important}
+body.lang-kn,.lang-kn input,.lang-kn select{font-family:'Noto Sans Kannada','DM Sans',sans-serif!important}
+body.lang-ml,.lang-ml input,.lang-ml select{font-family:'Noto Sans Malayalam','DM Sans',sans-serif!important}
+body.lang-bn,.lang-bn input,.lang-bn select{font-family:'Noto Sans Bengali','DM Sans',sans-serif!important}
+body.lang-gu,.lang-gu input,.lang-gu select{font-family:'Noto Sans Gujarati','DM Sans',sans-serif!important}
+body.lang-pa,.lang-pa input,.lang-pa select{font-family:'Noto Sans Gurmukhi','DM Sans',sans-serif!important}
+body.lang-or,.lang-or input,.lang-or select{font-family:'Noto Sans Odia','DM Sans',sans-serif!important}
+[data-i18n]{transition:opacity .15s}
 </style>
 </head>
 <body>
@@ -262,8 +290,8 @@ input:focus,select:focus{border-color:var(--text);background:var(--surface)}
     </div>
     <!-- SIGN IN -->
     <div id="auth-signin" class="card">
-      <h2 style="font-size:18px;margin-bottom:4px">Welcome back</h2>
-      <p style="font-size:13px;color:var(--text2);margin-bottom:20px">Sign in to your account</p>
+      <h2 style="font-size:18px;margin-bottom:4px" data-i18n="welcome_back">Welcome back</h2>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:20px" data-i18n="signin_sub">Sign in to your account</p>
       <div class="form-group"><label>Email</label><input id="si-email" type="email" placeholder="you@example.com"/></div>
       <div class="form-group"><label>Password</label><input id="si-pass" type="password" placeholder="Enter password"/></div>
       <div id="si-error" style="color:var(--red);font-size:13px;margin-bottom:8px;display:none"></div>
@@ -275,7 +303,7 @@ input:focus,select:focus{border-color:var(--text);background:var(--surface)}
     </div>
     <!-- SIGN UP -->
     <div id="auth-signup" class="card" style="display:none">
-      <h2 style="font-size:18px;margin-bottom:4px">Create account</h2>
+      <h2 style="font-size:18px;margin-bottom:4px" data-i18n="create_account">Create account</h2>
       <p style="font-size:13px;color:var(--text2);margin-bottom:20px">Start your cosmic journey</p>
       <div class="form-group"><label>Full Name</label><input id="su-name" type="text" placeholder="Your full name"/></div>
       <div class="form-group"><label>Email</label><input id="su-email" type="email" placeholder="you@example.com"/></div>
@@ -297,8 +325,20 @@ input:focus,select:focus{border-color:var(--text);background:var(--surface)}
     <div id="profile-email" style="font-size:12px;color:var(--text2);margin-top:2px"></div>
   </div>
   <div style="padding:8px">
-    <button onclick="showPage('home');closeProfile()" style="width:100%;text-align:left;padding:9px 12px;border:none;background:none;font-size:13px;border-radius:8px;cursor:pointer">🏠 Home</button>
-    <button onclick="doSignOut()" style="width:100%;text-align:left;padding:9px 12px;border:none;background:none;font-size:13px;border-radius:8px;cursor:pointer;color:var(--red)">↩ Sign Out</button>
+    <button onclick="showPage('home');closeProfile()" style="width:100%;text-align:left;padding:9px 12px;border:none;background:none;font-size:13px;border-radius:8px;cursor:pointer">🏠 <span data-i18n="home">Home</span></button>
+    <button onclick="openLang();closeProfile()" style="width:100%;text-align:left;padding:9px 12px;border:none;background:none;font-size:13px;border-radius:8px;cursor:pointer">🌐 <span data-i18n="language">Language</span> — <span id="current-lang-label" style="color:var(--accent);font-weight:500">English</span></button>
+    <button onclick="doSignOut()" style="width:100%;text-align:left;padding:9px 12px;border:none;background:none;font-size:13px;border-radius:8px;cursor:pointer;color:var(--red)">↩ <span data-i18n="sign_out">Sign Out</span></button>
+  </div>
+</div>
+
+<!-- LANGUAGE MODAL -->
+<div class="lang-overlay" id="lang-overlay" onclick="if(event.target===this)closeLang()">
+  <div class="lang-sheet">
+    <div class="lang-header">
+      <h3 data-i18n="select_language">Select Language</h3>
+      <button class="lang-close" onclick="closeLang()">✕</button>
+    </div>
+    <div class="lang-list" id="lang-list"></div>
   </div>
 </div>
 
@@ -318,7 +358,7 @@ input:focus,select:focus{border-color:var(--text);background:var(--surface)}
 <!-- HOME -->
 <div id="page-home" class="page active" style="max-width:800px">
   <div class="hero">
-    <div class="hero-badge">✦ <span>AI-Powered</span> Vedic Astrology Platform</div>
+    <div class="hero-badge">✦ <span>AI-Powered</span> <span data-i18n="hero_badge">Vedic Astrology Platform</span></div>
     <h1>Ancient wisdom,<br/><em>modern clarity</em></h1>
     <p>Your personal Vedic astrology companion — Kundli, Horoscope, Matching, Panchang, Numerology & AI chat, all in one place.</p>
     <div class="hero-stats">
@@ -329,12 +369,12 @@ input:focus,select:focus{border-color:var(--text);background:var(--surface)}
     </div>
   </div>
   <div style="padding:0 0 16px">
-    <p style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text2);font-weight:600;margin-bottom:14px;padding:0 4px">Choose a Feature</p>
+    <p style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text2);font-weight:600;margin-bottom:14px;padding:0 4px" data-i18n="choose_feature">Choose a Feature</p>
     <div class="feature-grid">
       <button class="feature-card" onclick="showPage('kundli')">
         <div class="feature-icon" style="background:#FFF3E8">⬡</div>
         <div class="feature-info">
-          <div class="feature-title">Kundli</div>
+          <div class="feature-title" data-i18n="feat_kundli">Kundli</div>
           <div class="feature-desc">Birth chart, planets, doshas & yogas</div>
         </div>
         <div class="feature-arrow">›</div>
@@ -342,7 +382,7 @@ input:focus,select:focus{border-color:var(--text);background:var(--surface)}
       <button class="feature-card" onclick="showPage('horoscope')">
         <div class="feature-icon" style="background:#FFF8E1">☀</div>
         <div class="feature-info">
-          <div class="feature-title">Daily Horoscope</div>
+          <div class="feature-title" data-i18n="feat_horoscope">Daily Horoscope</div>
           <div class="feature-desc">Today's predictions for all 12 rashis</div>
         </div>
         <div class="feature-arrow">›</div>
@@ -350,7 +390,7 @@ input:focus,select:focus{border-color:var(--text);background:var(--surface)}
       <button class="feature-card" onclick="showPage('matching')">
         <div class="feature-icon" style="background:#FCE4EC">♡</div>
         <div class="feature-info">
-          <div class="feature-title">Kundli Matching</div>
+          <div class="feature-title" data-i18n="feat_matching">Kundli Matching</div>
           <div class="feature-desc">Ashtakoota guna milan compatibility</div>
         </div>
         <div class="feature-arrow">›</div>
@@ -358,7 +398,7 @@ input:focus,select:focus{border-color:var(--text);background:var(--surface)}
       <button class="feature-card" onclick="showPage('panchang')">
         <div class="feature-icon" style="background:#E8F5E9">📅</div>
         <div class="feature-info">
-          <div class="feature-title">Panchang</div>
+          <div class="feature-title" data-i18n="feat_panchang">Panchang</div>
           <div class="feature-desc">Tithi, nakshatra, yoga & muhurat</div>
         </div>
         <div class="feature-arrow">›</div>
@@ -366,7 +406,7 @@ input:focus,select:focus{border-color:var(--text);background:var(--surface)}
       <button class="feature-card" onclick="showPage('numerology')">
         <div class="feature-icon" style="background:#EDE7F6">∞</div>
         <div class="feature-info">
-          <div class="feature-title">Numerology</div>
+          <div class="feature-title" data-i18n="feat_numerology">Numerology</div>
           <div class="feature-desc">Life path, destiny & soul numbers</div>
         </div>
         <div class="feature-arrow">›</div>
@@ -374,7 +414,7 @@ input:focus,select:focus{border-color:var(--text);background:var(--surface)}
       <button class="feature-card" onclick="showPage('chat')">
         <div class="feature-icon" style="background:#E3F2FD">✦</div>
         <div class="feature-info">
-          <div class="feature-title">AI Astrologer</div>
+          <div class="feature-title" data-i18n="feat_chat">AI Astrologer</div>
           <div class="feature-desc">Chat with Jyotish AI powered by Claude</div>
         </div>
         <div class="feature-arrow">›</div>
@@ -1093,9 +1133,193 @@ function appendTyping(){
   return div;
 }
 
+// ── LANGUAGE SYSTEM ──────────────────────────────────────────────────────────
+const LANGUAGES=[
+  {code:'en',name:'English',native:'A',region:'All India',font:''},
+  {code:'hi',name:'Hindi',native:'हि',region:'North India · Most Spoken',font:'Noto Sans Devanagari'},
+  {code:'te',name:'Telugu',native:'తె',region:'Andhra Pradesh · Telangana',font:'Noto Sans Telugu'},
+  {code:'ta',name:'Tamil',native:'த',region:'Tamil Nadu · Sri Lanka',font:'Noto Sans Tamil'},
+  {code:'kn',name:'Kannada',native:'ಕ',region:'Karnataka',font:'Noto Sans Kannada'},
+  {code:'ml',name:'Malayalam',native:'മ',region:'Kerala',font:'Noto Sans Malayalam'},
+  {code:'mr',name:'Marathi',native:'म',region:'Maharashtra',font:'Noto Sans Devanagari'},
+  {code:'gu',name:'Gujarati',native:'ગ',region:'Gujarat',font:'Noto Sans Gujarati'},
+  {code:'bn',name:'Bengali',native:'ব',region:'West Bengal · Bangladesh',font:'Noto Sans Bengali'},
+  {code:'pa',name:'Punjabi',native:'ਪ',region:'Punjab',font:'Noto Sans Gurmukhi'},
+  {code:'or',name:'Odia',native:'ଓ',region:'Odisha',font:'Noto Sans Odia'},
+  {code:'ur',name:'Urdu',native:'اُ',region:'Hyderabad · UP',font:'Noto Sans Arabic'},
+  {code:'as',name:'Assamese',native:'অ',region:'Assam',font:'Noto Sans Bengali'},
+  {code:'mai',name:'Maithili',native:'मै',region:'Bihar · Jharkhand',font:'Noto Sans Devanagari'},
+  {code:'sa',name:'Sanskrit',native:'सं',region:'Classical · Liturgical',font:'Noto Sans Devanagari'}
+];
+
+const TRANSLATIONS={
+  en:{
+    select_language:'Select Language',home:'Home',language:'Language',sign_out:'Sign Out',
+    hero_badge:'Vedic Astrology Platform',choose_feature:'Choose a Feature',
+    feat_kundli:'Kundli',feat_horoscope:'Daily Horoscope',feat_matching:'Kundli Matching',
+    feat_panchang:'Panchang',feat_numerology:'Numerology',feat_chat:'AI Astrologer',
+    welcome_back:'Welcome back',signin_sub:'Sign in to your account',create_account:'Create account',
+    generate_kundli:'Generate Kundli',birth_chart:'Birth Chart',daily_horoscope:'Daily Horoscope',
+    kundli_matching:'Kundli Matching',panchang:'Panchang',numerology:'Numerology Reading',
+    ai_chat:'AI Astrologer',name:'Full Name',dob:'Date of Birth',tob:'Time of Birth',
+    pob:'Place of Birth',generate:'Generate Birth Chart',calculate:'Calculate Numbers',
+    sign_in:'Sign In',sign_up:'Sign Up',guest:'Continue as Guest',
+    planets:'Planets',dasha:'Dasha',doshas:'Doshas & Yogas',chart:'Chart'
+  },
+  hi:{
+    select_language:'भाषा चुनें',home:'होम',language:'भाषा',sign_out:'साइन आउट',
+    hero_badge:'वैदिक ज्योतिष मंच',choose_feature:'सुविधा चुनें',
+    feat_kundli:'कुंडली',feat_horoscope:'दैनिक राशिफल',feat_matching:'कुंडली मिलान',
+    feat_panchang:'पंचांग',feat_numerology:'अंकज्योतिष',feat_chat:'AI ज्योतिषी',
+    welcome_back:'वापस स्वागत है',signin_sub:'अपने खाते में साइन इन करें',create_account:'खाता बनाएं',
+    generate_kundli:'कुंडली बनाएं',birth_chart:'जन्म कुंडली',daily_horoscope:'दैनिक राशिफल',
+    kundli_matching:'कुंडली मिलान',panchang:'पंचांग',numerology:'अंक ज्योतिष',
+    ai_chat:'AI ज्योतिषी',name:'पूरा नाम',dob:'जन्म तिथि',tob:'जन्म समय',
+    pob:'जन्म स्थान',generate:'कुंडली बनाएं',calculate:'संख्याएं निकालें',
+    sign_in:'साइन इन',sign_up:'साइन अप',guest:'अतिथि के रूप में जारी रखें',
+    planets:'ग्रह',dasha:'दशा',doshas:'दोष और योग',chart:'चार्ट'
+  },
+  te:{
+    select_language:'భాషను ఎంచుకోండి',home:'హోమ్',language:'భాష',sign_out:'సైన్ అవుట్',
+    hero_badge:'వైదిక జ్యోతిష్య వేదిక',choose_feature:'ఫీచర్ ఎంచుకోండి',
+    feat_kundli:'కుండలి',feat_horoscope:'రోజువారీ రాశిఫలాలు',feat_matching:'కుండలి మ్యాచింగ్',
+    feat_panchang:'పంచాంగం',feat_numerology:'అంకశాస్త్రం',feat_chat:'AI జ్యోతిష్యుడు',
+    welcome_back:'తిరిగి స్వాగతం',signin_sub:'మీ ఖాతాలో సైన్ ఇన్ చేయండి',create_account:'ఖాతా సృష్టించండి',
+    generate_kundli:'కుండలి రూపొందించండి',birth_chart:'జన్మ కుండలి',daily_horoscope:'రోజువారీ రాశిఫలం',
+    kundli_matching:'కుండలి మ్యాచింగ్',panchang:'పంచాంగం',numerology:'అంకశాస్త్రం',
+    ai_chat:'AI జ్యోతిష్యుడు',name:'పూర్తి పేరు',dob:'పుట్టిన తేదీ',tob:'పుట్టిన సమయం',
+    pob:'పుట్టిన స్థలం',generate:'కుండలి రూపొందించండి',calculate:'సంఖ్యలు లెక్కించండి',
+    sign_in:'సైన్ ఇన్',sign_up:'సైన్ అప్',guest:'అతిథిగా కొనసాగండి',
+    planets:'గ్రహాలు',dasha:'దశ',doshas:'దోషాలు మరియు యోగాలు',chart:'చార్ట్'
+  },
+  ta:{
+    select_language:'மொழியைத் தேர்ந்தெடுக்கவும்',home:'முகப்பு',language:'மொழி',sign_out:'வெளியேறு',
+    hero_badge:'வேத ஜோதிட தளம்',choose_feature:'அம்சத்தைத் தேர்ந்தெடுக்கவும்',
+    feat_kundli:'ஜாதகம்',feat_horoscope:'தினசரி ராசிபலன்',feat_matching:'ஜாதக பொருத்தம்',
+    feat_panchang:'பஞ்சாங்கம்',feat_numerology:'எண்ணியல்',feat_chat:'AI ஜோதிடர்',
+    welcome_back:'மீண்டும் வரவேற்கிறோம்',signin_sub:'உங்கள் கணக்கில் உள்நுழையவும்',create_account:'கணக்கு உருவாக்கவும்',
+    generate_kundli:'ஜாதகம் உருவாக்கவும்',name:'முழு பெயர்',dob:'பிறந்த தேதி',
+    tob:'பிறந்த நேரம்',pob:'பிறந்த இடம்',generate:'ஜாதகம் உருவாக்கவும்',
+    sign_in:'உள்நுழை',sign_up:'பதிவு செய்',guest:'விருந்தினராக தொடரவும்',
+    planets:'கிரகங்கள்',dasha:'தசை',doshas:'தோஷங்கள்',chart:'சார்ட்'
+  },
+  kn:{
+    select_language:'ಭಾಷೆಯನ್ನು ಆಯ್ಕೆ ಮಾಡಿ',home:'ಹೋಮ್',language:'ಭಾಷೆ',sign_out:'ಸೈನ್ ಔಟ್',
+    hero_badge:'ವೈದಿಕ ಜ್ಯೋತಿಷ್ಯ ವೇದಿಕೆ',choose_feature:'ವೈಶಿಷ್ಟ್ಯ ಆಯ್ಕೆ ಮಾಡಿ',
+    feat_kundli:'ಕುಂಡಲಿ',feat_horoscope:'ದೈನಂದಿನ ರಾಶಿಭವಿಷ್ಯ',feat_matching:'ಕುಂಡಲಿ ಹೊಂದಾಣಿಕೆ',
+    feat_panchang:'ಪಂಚಾಂಗ',feat_numerology:'ಅಂಕಶಾಸ್ತ್ರ',feat_chat:'AI ಜ್ಯೋತಿಷಿ',
+    welcome_back:'ಮರಳಿ ಸ್ವಾಗತ',signin_sub:'ನಿಮ್ಮ ಖಾತೆಗೆ ಸೈನ್ ಇನ್ ಮಾಡಿ',create_account:'ಖಾತೆ ರಚಿಸಿ',
+    name:'ಪೂರ್ಣ ಹೆಸರು',dob:'ಹುಟ್ಟಿದ ದಿನಾಂಕ',tob:'ಹುಟ್ಟಿದ ಸಮಯ',pob:'ಹುಟ್ಟಿದ ಸ್ಥಳ',
+    sign_in:'ಸೈನ್ ಇನ್',sign_up:'ಸೈನ್ ಅಪ್',guest:'ಅತಿಥಿಯಾಗಿ ಮುಂದುವರಿಯಿರಿ',
+    planets:'ಗ್ರಹಗಳು',dasha:'ದಶಾ',doshas:'ದೋಷಗಳು',chart:'ಚಾರ್ಟ್'
+  },
+  ml:{
+    select_language:'ഭാഷ തിരഞ്ഞെടുക്കുക',home:'ഹോം',language:'ഭാഷ',sign_out:'സൈൻ ഔട്ട്',
+    hero_badge:'വൈദിക ജ്യോതിഷ് വേദി',choose_feature:'ഫീച്ചർ തിരഞ്ഞെടുക്കുക',
+    feat_kundli:'കുണ്ഡലി',feat_horoscope:'ദൈനംദിന ജാതകം',feat_matching:'കുണ്ഡലി ചേർച്ച',
+    feat_panchang:'പഞ്ചാംഗം',feat_numerology:'സംഖ്യാശാസ്ത്രം',feat_chat:'AI ജ്യോതിഷൻ',
+    welcome_back:'തിരിച്ചു സ്വാഗതം',signin_sub:'നിങ്ങളുടെ അക്കൗണ്ടിൽ സൈൻ ഇൻ ചെയ്യുക',create_account:'അക്കൗണ്ട് ഉണ്ടാക്കുക',
+    name:'പൂർണ്ണ നാമം',dob:'ജനനതീയതി',tob:'ജനന സമയം',pob:'ജനന സ്ഥലം',
+    sign_in:'സൈൻ ഇൻ',sign_up:'സൈൻ അപ്പ്',guest:'അതിഥിയായി തുടരുക',
+    planets:'ഗ്രഹങ്ങൾ',dasha:'ദശ',doshas:'ദോഷങ്ങൾ',chart:'ചാർട്ട്'
+  },
+  mr:{
+    select_language:'भाषा निवडा',home:'मुखपृष्ठ',language:'भाषा',sign_out:'साइन आउट',
+    hero_badge:'वैदिक ज्योतिष व्यासपीठ',choose_feature:'वैशिष्ट्य निवडा',
+    feat_kundli:'कुंडली',feat_horoscope:'दैनिक राशीभविष्य',feat_matching:'कुंडली जुळवणी',
+    feat_panchang:'पंचांग',feat_numerology:'अंकशास्त्र',feat_chat:'AI ज्योतिषी',
+    welcome_back:'परत स्वागत',signin_sub:'तुमच्या खात्यात साइन इन करा',create_account:'खाते तयार करा',
+    name:'पूर्ण नाव',dob:'जन्म तारीख',tob:'जन्म वेळ',pob:'जन्म ठिकाण',
+    sign_in:'साइन इन',sign_up:'साइन अप',guest:'अतिथी म्हणून सुरू ठेवा',
+    planets:'ग्रह',dasha:'दशा',doshas:'दोष आणि योग',chart:'चार्ट'
+  },
+  gu:{
+    select_language:'ભાષા પસંદ કરો',home:'હોમ',language:'ભાષા',sign_out:'સાઇન આઉટ',
+    hero_badge:'વૈદિક જ્યોતિષ પ્લેટફોર્મ',choose_feature:'સુવિધા પસંદ કરો',
+    feat_kundli:'કુંડળી',feat_horoscope:'દૈનિક રાશિફળ',feat_matching:'કુંડળી મેળ',
+    feat_panchang:'પંચાંગ',feat_numerology:'અંકશાસ્ત્ર',feat_chat:'AI જ્યોતિષી',
+    welcome_back:'પાછા આવ્યા',signin_sub:'તમારા એકાઉન્ટમાં સાઇન ઇન કરો',create_account:'એકાઉન્ટ બનાવો',
+    name:'પૂરું નામ',dob:'જન્મ તારીખ',sign_in:'સાઇન ઇન',sign_up:'સાઇન અપ',guest:'મહેમાન તરીકે ચાલુ રાખો'
+  },
+  bn:{
+    select_language:'ভাষা নির্বাচন করুন',home:'হোম',language:'ভাষা',sign_out:'সাইন আউট',
+    hero_badge:'বৈদিক জ্যোতিষ প্ল্যাটফর্ম',choose_feature:'বৈশিষ্ট্য নির্বাচন করুন',
+    feat_kundli:'কুণ্ডলী',feat_horoscope:'দৈনিক রাশিফল',feat_matching:'কুণ্ডলী মিলন',
+    feat_panchang:'পঞ্চাং',feat_numerology:'সংখ্যাতত্ত্ব',feat_chat:'AI জ্যোতিষী',
+    welcome_back:'ফিরে স্বাগতম',signin_sub:'আপনার অ্যাকাউন্টে সাইন ইন করুন',create_account:'অ্যাকাউন্ট তৈরি করুন',
+    name:'পুরো নাম',dob:'জন্ম তারিখ',sign_in:'সাইন ইন',sign_up:'সাইন আপ',guest:'অতিথি হিসেবে চালিয়ে যান'
+  },
+  pa:{
+    select_language:'ਭਾਸ਼ਾ ਚੁਣੋ',home:'ਹੋਮ',language:'ਭਾਸ਼ਾ',sign_out:'ਸਾਈਨ ਆਊਟ',
+    hero_badge:'ਵੈਦਿਕ ਜੋਤਿਸ਼ ਮੰਚ',choose_feature:'ਸੁਵਿਧਾ ਚੁਣੋ',
+    feat_kundli:'ਕੁੰਡਲੀ',feat_horoscope:'ਰੋਜ਼ਾਨਾ ਰਾਸ਼ੀਫਲ',feat_matching:'ਕੁੰਡਲੀ ਮਿਲਾਣ',
+    feat_panchang:'ਪੰਚਾਂਗ',feat_numerology:'ਅੰਕ ਵਿਗਿਆਨ',feat_chat:'AI ਜੋਤਿਸ਼ੀ',
+    welcome_back:'ਵਾਪਸ ਜੀ ਆਇਆਂ',signin_sub:'ਆਪਣੇ ਖਾਤੇ ਵਿੱਚ ਸਾਈਨ ਇਨ ਕਰੋ',create_account:'ਖਾਤਾ ਬਣਾਓ',
+    name:'ਪੂਰਾ ਨਾਮ',dob:'ਜਨਮ ਤਾਰੀਖ',sign_in:'ਸਾਈਨ ਇਨ',sign_up:'ਸਾਈਨ ਅੱਪ',guest:'ਮਹਿਮਾਨ ਵਜੋਂ ਜਾਰੀ ਰੱਖੋ'
+  }
+};
+
+let currentLang='en';
+
+function t(key){
+  const lang=TRANSLATIONS[currentLang]||TRANSLATIONS.en;
+  return lang[key]||TRANSLATIONS.en[key]||key;
+}
+
+function applyLang(code){
+  currentLang=code;
+  localStorage.setItem('ai_lang',code);
+  // Remove old lang class
+  document.body.className=document.body.className.replace(/lang-\w+/g,'').trim();
+  if(code!=='en')document.body.classList.add('lang-'+code);
+  // Update all i18n elements
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key=el.getAttribute('data-i18n');
+    const txt=t(key);
+    if(txt)el.textContent=txt;
+  });
+  // Update current lang label
+  const lang=LANGUAGES.find(l=>l.code===code);
+  if(lang){
+    const label=document.getElementById('current-lang-label');
+    if(label)label.textContent=lang.name;
+  }
+  // Update lang list selection
+  document.querySelectorAll('.lang-item').forEach(el=>{
+    const isSelected=el.getAttribute('data-lang')===code;
+    el.classList.toggle('selected',isSelected);
+    const check=el.querySelector('.lang-check');
+    if(check)check.textContent=isSelected?'✓':'';
+  });
+}
+
+function openLang(){
+  document.getElementById('lang-overlay').classList.add('open');
+}
+function closeLang(){
+  document.getElementById('lang-overlay').classList.remove('open');
+}
+
+function initLangList(){
+  const list=document.getElementById('lang-list');
+  list.innerHTML=LANGUAGES.map(l=>`
+    <div class="lang-item" data-lang="${l.code}" onclick="applyLang('${l.code}');closeLang()">
+      <div class="lang-native" style="font-family:'${l.font||'DM Sans'}',sans-serif">${l.native}</div>
+      <div class="lang-info">
+        <div class="lang-name">${l.name}</div>
+        <div class="lang-region">${l.region}</div>
+      </div>
+      <div class="lang-check"></div>
+    </div>`).join('');
+  // Apply saved language
+  const saved=localStorage.getItem('ai_lang')||'en';
+  applyLang(saved);
+}
+
 // ── INIT ──────────────────────────────────────────────────────────────────────
 initRashiGrid();
 initNakshatraSelects();
+initLangList();
 const today=new Date().toISOString().split('T')[0];
 document.getElementById('panchang-date-input').value=today;
 updatePanchang();
