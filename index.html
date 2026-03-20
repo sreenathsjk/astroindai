@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AstroIndia — Vedic Astrology & AI Insights</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#F7F5F0;
+  --bg2:#EFEDE7;
+  --surface:#FFFFFF;
+  --border:#E2DDD5;
+  --text:#1A1714;
+  --text2:#6B6560;
+  --accent:#C8783A;
+  --accent2:#8B4513;
+  --gold:#D4AF37;
+  --red:#B84040;
+  --green:#3A7D44;
+  --blue:#2D5FA6;
+  --radius:12px;
+  --shadow:0 2px 16px rgba(0,0,0,0.06);
+  --shadow-lg:0 8px 40px rgba(0,0,0,0.1);
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+h1,h2,h3,h4{font-family:'DM Serif Display',serif}
+button{cursor:pointer;font-family:'DM Sans',sans-serif}
+input,select,textarea{font-family:'DM Sans',sans-serif}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(247,245,240,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
+.nav-logo-icon{width:32px;height:32px;background:var(--text);border-radius:8px;display:grid;place-items:center;color:#fff;font-size:16px}
+.nav-logo span{font-family:'DM Serif Display',serif;font-size:18px;letter-spacing:-0.3px}
+.nav-tabs{display:flex;gap:2px;background:var(--bg2);border-radius:10px;padding:3px}
+.nav-tab{padding:6px 14px;border-radius:8px;border:none;background:transparent;font-size:13px;color:var(--text2);font-weight:500;transition:all .15s}
+.nav-tab.active{background:var(--surface);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,0.1)}
+.nav-tab:hover:not(.active){color:var(--text)}
+.nav-right{display:flex;align-items:center;gap:8px}
+.btn-primary{padding:8px 18px;background:var(--text);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:500;transition:all .15s}
+.btn-primary:hover{background:var(--accent2)}
+
+/* HERO */
+.hero{padding:72px 24px 56px;text-align:center;max-width:720px;margin:0 auto}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:6px 14px;font-size:12px;color:var(--text2);margin-bottom:24px}
+.hero-badge span{color:var(--accent);font-weight:600}
+.hero h1{font-size:clamp(36px,6vw,64px);line-height:1.1;letter-spacing:-1.5px;margin-bottom:16px}
+.hero h1 em{color:var(--accent);font-style:italic}
+.hero p{font-size:17px;color:var(--text2);line-height:1.6;margin-bottom:32px;max-width:520px;margin-left:auto;margin-right:auto}
+.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-lg{padding:14px 28px;border-radius:10px;font-size:15px;font-weight:500;border:none;transition:all .2s}
+.btn-dark{background:var(--text);color:#fff}
+.btn-dark:hover{background:var(--accent2);transform:translateY(-1px)}
+.btn-outline{background:transparent;color:var(--text);border:1.5px solid var(--border)}
+.btn-outline:hover{border-color:var(--text);transform:translateY(-1px)}
+.hero-stats{display:flex;gap:32px;justify-content:center;margin-top:48px;padding-top:32px;border-top:1px solid var(--border)}
+.stat{text-align:center}
+.stat-num{font-family:'DM Serif Display',serif;font-size:28px;color:var(--text)}
+.stat-label{font-size:12px;color:var(--text2);margin-top:2px}
+
+/* PAGES */
+.page{display:none;padding:24px;max-width:900px;margin:0 auto;animation:fadeIn .2s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+.card-title{font-size:18px;margin-bottom:4px}
+.card-sub{font-size:13px;color:var(--text2);margin-bottom:20px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:600px){.grid2,.grid3{grid-template-columns:1fr}.nav-tabs{gap:1px}.nav-tab{padding:6px 10px;font-size:12px}}
+
+/* FORM */
+.form-group{margin-bottom:16px}
+label{display:block;font-size:13px;font-weight:500;color:var(--text2);margin-bottom:6px}
+input,select{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;color:var(--text);background:var(--bg);outline:none;transition:border .15s}
+input:focus,select:focus{border-color:var(--text);background:var(--surface)}
+.btn-submit{width:100%;padding:13px;background:var(--text);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:500;margin-top:8px;transition:all .2s}
+.btn-submit:hover{background:var(--accent2)}
+
+/* KUNDLI CHART */
+.kundli-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px}
+.chart-box{aspect-ratio:1;position:relative;background:var(--surface);border:2px solid var(--border);border-radius:var(--radius)}
+.chart-inner{width:100%;height:100%;position:relative}
+.north-chart{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,1fr);width:100%;height:100%}
+.nc-cell{border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;padding:4px;text-align:center;min-height:60px}
+.nc-cell.house-label{font-family:'DM Serif Display',serif;font-size:13px;font-weight:bold;color:var(--accent)}
+.nc-cell.empty{background:var(--bg2)}
+.nc-cell .planets{font-size:10px;color:var(--text2);line-height:1.4}
+.planet-tag{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 5px;font-size:10px;margin:1px;color:var(--text)}
+.planet-tag.retro{color:var(--red)}
+
+/* PLANET TABLE */
+.planet-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:12px}
+.planet-table th{text-align:left;padding:8px 12px;border-bottom:2px solid var(--border);color:var(--text2);font-weight:500;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+.planet-table td{padding:9px 12px;border-bottom:1px solid var(--border)}
+.planet-table tr:last-child td{border-bottom:none}
+.planet-table tr:hover td{background:var(--bg2)}
+.strength-bar{height:4px;border-radius:2px;background:var(--border);width:80px;display:inline-block;vertical-align:middle}
+.strength-fill{height:100%;border-radius:2px;background:var(--accent)}
+
+/* DASHA */
+.dasha-card{border-left:3px solid var(--accent);padding:12px 16px;background:var(--bg2);border-radius:0 8px 8px 0;margin-bottom:10px}
+.dasha-current{border-left-color:var(--green);background:#f0f7f2}
+.dasha-label{font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.dasha-planet{font-family:'DM Serif Display',serif;font-size:18px}
+.dasha-dates{font-size:12px;color:var(--text2)}
+
+/* HOROSCOPE */
+.rashi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px}
+@media(max-width:500px){.rashi-grid{grid-template-columns:repeat(3,1fr)}}
+.rashi-btn{padding:12px 8px;border:1.5px solid var(--border);border-radius:10px;background:var(--surface);text-align:center;transition:all .15s;cursor:pointer}
+.rashi-btn:hover,.rashi-btn.active{border-color:var(--text);background:var(--text);color:#fff}
+.rashi-btn .rashi-icon{font-size:20px;margin-bottom:4px}
+.rashi-btn .rashi-name{font-size:12px;font-weight:500}
+.horoscope-result{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-top:16px}
+.score-row{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0}
+.score-chip{flex:1;min-width:80px;background:var(--bg2);border-radius:8px;padding:12px;text-align:center}
+.score-chip .score-val{font-family:'DM Serif Display',serif;font-size:22px;color:var(--accent)}
+.score-chip .score-key{font-size:11px;color:var(--text2);margin-top:2px}
+
+/* KUNDLI MATCHING */
+.match-result{margin-top:20px}
+.guna-bar{margin:12px 0}
+.guna-name{font-size:13px;font-weight:500;margin-bottom:4px;display:flex;justify-content:space-between}
+.guna-track{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.guna-fill{height:100%;border-radius:3px;background:var(--accent);transition:width 1s ease}
+.match-score-circle{width:120px;height:120px;border-radius:50%;background:var(--surface);border:3px solid var(--accent);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:20px auto}
+.match-score-circle .score{font-family:'DM Serif Display',serif;font-size:36px;color:var(--accent)}
+.match-score-circle .label{font-size:11px;color:var(--text2)}
+
+/* PANCHANG */
+.panchang-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(max-width:500px){.panchang-grid{grid-template-columns:1fr}}
+.panchang-item{background:var(--bg2);border-radius:10px;padding:14px 16px}
+.panchang-key{font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.panchang-val{font-size:15px;font-weight:500}
+.panchang-val.devanagari{font-family:'Noto Sans Devanagari',sans-serif;font-size:14px}
+.muhurat-list{margin-top:16px}
+.muhurat-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
+.muhurat-item:last-child{border-bottom:none}
+.muhurat-name{font-weight:500;font-size:14px}
+.muhurat-time{font-size:13px;color:var(--text2)}
+.muhurat-badge{font-size:11px;padding:2px 8px;border-radius:12px;font-weight:500}
+.badge-good{background:#e8f5e9;color:var(--green)}
+.badge-avoid{background:#fdecea;color:var(--red)}
+.badge-ok{background:#fff3e0;color:#e65100}
+
+/* NUMEROLOGY */
+.num-display{text-align:center;padding:32px;background:linear-gradient(135deg,var(--bg2),var(--surface));border-radius:var(--radius);border:1px solid var(--border);margin:16px 0}
+.num-circle{width:100px;height:100px;border-radius:50%;background:var(--text);color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-family:'DM Serif Display',serif;font-size:42px}
+.num-name{font-size:20px;margin-bottom:4px}
+.num-sub{color:var(--text2);font-size:14px}
+.num-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+.num-item{background:var(--bg2);border-radius:10px;padding:14px;text-align:center}
+.num-item .n{font-family:'DM Serif Display',serif;font-size:28px;color:var(--accent)}
+.num-item .k{font-size:11px;color:var(--text2);margin-top:2px}
+
+/* AI CHAT */
+.chat-container{height:460px;display:flex;flex-direction:column;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--surface)}
+.chat-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.chat-avatar{width:32px;height:32px;border-radius:50%;background:var(--text);display:grid;place-items:center;color:#fff;font-size:14px}
+.chat-header-info h4{font-size:14px;margin:0}
+.chat-header-info p{font-size:11px;color:var(--text2);margin:0}
+.online-dot{width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block;margin-left:6px}
+.chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+.msg{max-width:80%;display:flex;flex-direction:column;gap:4px}
+.msg.user{align-self:flex-end;align-items:flex-end}
+.msg.bot{align-self:flex-start;align-items:flex-start}
+.msg-bubble{padding:10px 14px;border-radius:16px;font-size:14px;line-height:1.5}
+.msg.bot .msg-bubble{background:var(--bg2);border-radius:4px 16px 16px 16px}
+.msg.user .msg-bubble{background:var(--text);color:#fff;border-radius:16px 4px 16px 16px}
+.msg-time{font-size:11px;color:var(--text2)}
+.chat-input-area{padding:12px;border-top:1px solid var(--border);display:flex;gap:8px}
+.chat-input{flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:24px;font-size:14px;outline:none;background:var(--bg)}
+.chat-input:focus{border-color:var(--text)}
+.chat-send{width:40px;height:40px;border-radius:50%;background:var(--text);border:none;color:#fff;display:grid;place-items:center;flex-shrink:0;transition:background .15s}
+.chat-send:hover{background:var(--accent2)}
+.typing-indicator{display:flex;gap:4px;align-items:center;padding:12px 14px;background:var(--bg2);border-radius:4px 16px 16px 16px;width:fit-content}
+.typing-dot{width:6px;height:6px;border-radius:50%;background:var(--text2);animation:typingBounce 1.2s infinite}
+.typing-dot:nth-child(2){animation-delay:.2s}
+.typing-dot:nth-child(3){animation-delay:.4s}
+@keyframes typingBounce{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
+.quick-questions{display:flex;gap:8px;flex-wrap:wrap;padding:0 12px 12px;border-top:none}
+.quick-q{padding:6px 12px;border:1.5px solid var(--border);border-radius:16px;font-size:12px;background:var(--surface);cursor:pointer;transition:all .15s}
+.quick-q:hover{border-color:var(--text);background:var(--text);color:#fff}
+
+/* DOSHA TAGS */
+.tag{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:6px;font-size:12px;font-weight:500;margin:3px}
+.tag-bad{background:#fdecea;color:var(--red);border:1px solid #f5c6cb}
+.tag-good{background:#e8f5e9;color:var(--green);border:1px solid #c3e6cb}
+.tag-warn{background:#fff3e0;color:#e65100;border:1px solid #ffe0b2}
+.tag-neutral{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.yoga-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+
+/* SECTION HEADING */
+.section-label{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin-bottom:12px;font-weight:600}
+.divider{border:none;border-top:1px solid var(--border);margin:20px 0}
+.result-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+.result-title{font-size:22px}
+.result-meta{font-size:13px;color:var(--text2);margin-top:2px}
+.tab-row{display:flex;gap:4px;background:var(--bg2);border-radius:10px;padding:3px;margin-bottom:20px;flex-wrap:wrap}
+.tab-btn{padding:7px 14px;border-radius:8px;border:none;background:transparent;font-size:13px;color:var(--text2);cursor:pointer;font-weight:500;transition:all .15s}
+.tab-btn.active{background:var(--surface);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,0.1)}
+
+/* SCROLL */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+/* LOADING */
+.loader{display:inline-block;width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--text);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-state{text-align:center;padding:32px;color:var(--text2)}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:48px 24px;color:var(--text2)}
+.empty-icon{font-size:40px;margin-bottom:12px}
+.empty-text{font-size:15px}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#" onclick="showPage('home')">
+    <div class="nav-logo-icon">☽</div>
+    <span>AstroIndia</span>
+  </a>
+  <div class="nav-tabs">
+    <button class="nav-tab" onclick="showPage('kundli')">Kundli</button>
+    <button class="nav-tab" onclick="showPage('horoscope')">Horoscope</button>
+    <button class="nav-tab" onclick="showPage('matching')">Matching</button>
+    <button class="nav-tab" onclick="showPage('panchang')">Panchang</button>
+    <button class="nav-tab" onclick="showPage('numerology')">Numerology</button>
+    <button class="nav-tab" onclick="showPage('chat')">AI Chat</button>
+  </div>
+  <div class="nav-right">
+    <button class="btn-primary" onclick="showPage('kundli')">Get Kundli</button>
+  </div>
+</nav>
+
+<!-- HOME -->
+<div id="page-home" class="page active" style="max-width:800px">
+  <div class="hero">
+    <div class="hero-badge">✦ <span>AI-Powered</span> Vedic Astrology Platform</div>
+    <h1>Ancient wisdom,<br/><em>modern clarity</em></h1>
+    <p>Generate your Kundli, read daily horoscope, check Kundli matching, explore Panchang, Numerology and chat with our AI astrologer.</p>
+    <div class="hero-actions">
+      <button class="btn-lg btn-dark" onclick="showPage('kundli')">Generate Free Kundli</button>
+      <button class="btn-lg btn-outline" onclick="showPage('chat')">Talk to AI Astrologer</button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">9</div><div class="stat-label">Planets Tracked</div></div>
+      <div class="stat"><div class="stat-num">27</div><div class="stat-label">Nakshatras</div></div>
+      <div class="stat"><div class="stat-num">120yr</div><div class="stat-label">Dasha Cycle</div></div>
+      <div class="stat"><div class="stat-num">Free</div><div class="stat-label">Core Features</div></div>
+    </div>
+  </div>
+  <div class="grid3" style="margin-top:0;padding:0 0 48px">
+    <div class="card" style="cursor:pointer" onclick="showPage('kundli')">
+      <div style="font-size:28px;margin-bottom:12px">⬡</div>
+      <h3 style="font-size:16px;margin-bottom:6px">Birth Chart</h3>
+      <p style="font-size:13px;color:var(--text2)">Full Lagna chart, planetary positions, houses, doshas & yogas</p>
+    </div>
+    <div class="card" style="cursor:pointer" onclick="showPage('horoscope')">
+      <div style="font-size:28px;margin-bottom:12px">☀</div>
+      <h3 style="font-size:16px;margin-bottom:6px">Daily Horoscope</h3>
+      <p style="font-size:13px;color:var(--text2)">Personalised predictions for all 12 rashis with scores</p>
+    </div>
+    <div class="card" style="cursor:pointer" onclick="showPage('matching')">
+      <div style="font-size:28px;margin-bottom:12px">♡</div>
+      <h3 style="font-size:16px;margin-bottom:6px">Kundli Matching</h3>
+      <p style="font-size:13px;color:var(--text2)">Ashtakoota guna milan for marriage compatibility</p>
+    </div>
+    <div class="card" style="cursor:pointer" onclick="showPage('panchang')">
+      <div style="font-size:28px;margin-bottom:12px">📅</div>
+      <h3 style="font-size:16px;margin-bottom:6px">Panchang</h3>
+      <p style="font-size:13px;color:var(--text2)">Today's tithi, nakshatra, yoga, karana & muhurat</p>
+    </div>
+    <div class="card" style="cursor:pointer" onclick="showPage('numerology')">
+      <div style="font-size:28px;margin-bottom:12px">∞</div>
+      <h3 style="font-size:16px;margin-bottom:6px">Numerology</h3>
+      <p style="font-size:13px;color:var(--text2)">Life path, destiny, soul urge and personality numbers</p>
+    </div>
+    <div class="card" style="cursor:pointer" onclick="showPage('chat')">
+      <div style="font-size:28px;margin-bottom:12px">✦</div>
+      <h3 style="font-size:16px;margin-bottom:6px">AI Astrologer</h3>
+      <p style="font-size:13px;color:var(--text2)">Chat with our Claude-powered Vedic astrology expert</p>
+    </div>
+  </div>
+</div>
+
+<!-- KUNDLI -->
+<div id="page-kundli" class="page">
+  <div id="kundli-form-section">
+    <div class="card" style="max-width:520px;margin:0 auto">
+      <h2 class="card-title">Generate Kundli</h2>
+      <p class="card-sub">Enter birth details for your Vedic birth chart</p>
+      <div class="form-group"><label>Full Name</label><input id="k-name" type="text" placeholder="Enter full name"/></div>
+      <div class="grid2">
+        <div class="form-group"><label>Date of Birth</label><input id="k-dob" type="date"/></div>
+        <div class="form-group"><label>Time of Birth</label><input id="k-tob" type="time"/></div>
+      </div>
+      <div class="form-group"><label>Place of Birth</label><input id="k-pob" type="text" placeholder="e.g. Mumbai, Maharashtra"/></div>
+      <div class="grid2">
+        <div class="form-group"><label>Latitude</label><input id="k-lat" type="number" step="0.01" placeholder="e.g. 19.07"/></div>
+        <div class="form-group"><label>Longitude</label><input id="k-lon" type="number" step="0.01" placeholder="e.g. 72.87"/></div>
+      </div>
+      <button class="btn-submit" onclick="generateKundli()">Generate Birth Chart</button>
+    </div>
+  </div>
+  <div id="kundli-result-section" style="display:none"></div>
+</div>
+
+<!-- HOROSCOPE -->
+<div id="page-horoscope" class="page">
+  <div class="card">
+    <h2 class="card-title">Daily Horoscope</h2>
+    <p class="card-sub">Select your Rashi (Moon Sign) for today's prediction</p>
+    <div class="rashi-grid" id="rashi-grid"></div>
+    <div id="horoscope-result"></div>
+  </div>
+</div>
+
+<!-- MATCHING -->
+<div id="page-matching" class="page">
+  <div class="card">
+    <h2 class="card-title">Kundli Matching</h2>
+    <p class="card-sub">Ashtakoota Guna Milan for marriage compatibility</p>
+    <div class="grid2">
+      <div>
+        <div class="section-label">Boy's Details</div>
+        <div class="form-group"><label>Name</label><input id="m-boy-name" type="text" placeholder="Boy's name"/></div>
+        <div class="form-group"><label>Date of Birth</label><input id="m-boy-dob" type="date"/></div>
+        <div class="form-group"><label>Nakshatra</label>
+          <select id="m-boy-nak"><option value="">Select Nakshatra</option></select>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Girl's Details</div>
+        <div class="form-group"><label>Name</label><input id="m-girl-name" type="text" placeholder="Girl's name"/></div>
+        <div class="form-group"><label>Date of Birth</label><input id="m-girl-dob" type="date"/></div>
+        <div class="form-group"><label>Nakshatra</label>
+          <select id="m-girl-nak"><option value="">Select Nakshatra</option></select>
+        </div>
+      </div>
+    </div>
+    <button class="btn-submit" onclick="calculateMatching()">Calculate Compatibility</button>
+    <div id="matching-result"></div>
+  </div>
+</div>
+
+<!-- PANCHANG -->
+<div id="page-panchang" class="page">
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:8px">
+      <div><h2 class="card-title">Panchang</h2><p style="font-size:13px;color:var(--text2)" id="panchang-date"></p></div>
+      <input type="date" id="panchang-date-input" onchange="updatePanchang()" style="padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);max-width:160px"/>
+    </div>
+    <div id="panchang-content"></div>
+  </div>
+</div>
+
+<!-- NUMEROLOGY -->
+<div id="page-numerology" class="page">
+  <div class="card" style="max-width:520px;margin:0 auto">
+    <h2 class="card-title">Numerology Reading</h2>
+    <p class="card-sub">Discover your core numbers based on name and birth date</p>
+    <div class="form-group"><label>Full Name (as per birth certificate)</label><input id="n-name" type="text" placeholder="Enter full name"/></div>
+    <div class="form-group"><label>Date of Birth</label><input id="n-dob" type="date"/></div>
+    <button class="btn-submit" onclick="calculateNumerology()">Calculate Numbers</button>
+    <div id="numerology-result"></div>
+  </div>
+</div>
+
+<!-- AI CHAT -->
+<div id="page-chat" class="page" style="max-width:680px">
+  <div class="chat-container">
+    <div class="chat-header">
+      <div class="chat-avatar">★</div>
+      <div class="chat-header-info">
+        <h4>Jyotish AI <span class="online-dot"></span></h4>
+        <p>Vedic Astrology Expert · Powered by Claude</p>
+      </div>
+    </div>
+    <div class="chat-messages" id="chat-messages">
+      <div class="msg bot">
+        <div class="msg-bubble">🙏 Namaste! I am Jyotish AI, your personal Vedic astrology guide.<br/><br/>I can help you understand your Kundli, explain planetary transits, predict auspicious timings, and answer questions about Vedic astrology, numerology, and muhurat.<br/><br/>What would you like to know today?</div>
+        <div class="msg-time">Just now</div>
+      </div>
+    </div>
+    <div class="quick-questions" id="quick-questions">
+      <button class="quick-q" onclick="sendQuickQ(this)">What is my lucky day?</button>
+      <button class="quick-q" onclick="sendQuickQ(this)">Explain Manglik dosha</button>
+      <button class="quick-q" onclick="sendQuickQ(this)">Best time for business?</button>
+      <button class="quick-q" onclick="sendQuickQ(this)">What is Vimshottari Dasha?</button>
+    </div>
+    <div class="chat-input-area">
+      <input class="chat-input" id="chat-input" placeholder="Ask about astrology, kundli, muhurat..." onkeydown="if(event.key==='Enter')sendChat()"/>
+      <button class="chat-send" onclick="sendChat()">➤</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const RASHIS=[
+  {name:'Aries',hindi:'मेष',icon:'♈',lord:'Mars'},
+  {name:'Taurus',hindi:'वृषभ',icon:'♉',lord:'Venus'},
+  {name:'Gemini',hindi:'मिथुन',icon:'♊',lord:'Mercury'},
+  {name:'Cancer',hindi:'कर्क',icon:'♋',lord:'Moon'},
+  {name:'Leo',hindi:'सिंह',icon:'♌',lord:'Sun'},
+  {name:'Virgo',hindi:'कन्या',icon:'♍',lord:'Mercury'},
+  {name:'Libra',hindi:'तुला',icon:'♎',lord:'Venus'},
+  {name:'Scorpio',hindi:'वृश्चिक',icon:'♏',lord:'Mars'},
+  {name:'Sagittarius',hindi:'धनु',icon:'♐',lord:'Jupiter'},
+  {name:'Capricorn',hindi:'मकर',icon:'♑',lord:'Saturn'},
+  {name:'Aquarius',hindi:'कुंभ',icon:'♒',lord:'Saturn'},
+  {name:'Pisces',hindi:'मीन',icon:'♓',lord:'Jupiter'}
+];
+const NAKSHATRAS_LIST=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishta','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
+const PLANETS=['Sun','Moon','Mars','Mercury','Jupiter','Venus','Saturn','Rahu','Ketu'];
+const DASHA_YEARS={Sun:6,Moon:10,Mars:7,Rahu:18,Jupiter:16,Saturn:19,Mercury:17,Ketu:7,Venus:20};
+const DASHA_ORDER=['Ketu','Venus','Sun','Moon','Mars','Rahu','Jupiter','Saturn','Mercury'];
+const SIGNS=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+const PLANET_SYMBOLS={Sun:'☉',Moon:'☽',Mars:'♂',Mercury:'☿',Jupiter:'♃',Venus:'♀',Saturn:'♄',Rahu:'☊',Ketu:'☋'};
+
+// ── NAV ───────────────────────────────────────────────────────────────────────
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  const page=document.getElementById('page-'+id);
+  if(page)page.classList.add('active');
+  const tabs=document.querySelectorAll('.nav-tab');
+  const pageMap={kundli:0,horoscope:1,matching:2,panchang:3,numerology:4,chat:5};
+  if(pageMap[id]!==undefined)tabs[pageMap[id]]?.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ── ASTRO ENGINE ──────────────────────────────────────────────────────────────
+function toJD(dateStr,timeStr,utcOffset=5.5){
+  const[y,m,d]=dateStr.split('-').map(Number);
+  const[h,mn]=(timeStr||'12:00').split(':').map(Number);
+  const utcH=h+mn/60-utcOffset;
+  let yr=y,mo=m;
+  if(mo<=2){yr--;mo+=12;}
+  const A=Math.floor(yr/100),B=2-A+Math.floor(A/4);
+  return Math.floor(365.25*(yr+4716))+Math.floor(30.6001*(mo+1))+d+utcH/24+B-1524.5;
+}
+function calcPlanets(jd){
+  const T=(jd-2451545.0)/36525;
+  const tropical={
+    Sun:((280.46646+36000.76983*T)%360+360)%360,
+    Moon:((218.3165+481267.8813*T)%360+360)%360,
+    Mars:((355.4337+19140.2993*T)%360+360)%360,
+    Mercury:((252.2503+149472.6746*T)%360+360)%360,
+    Jupiter:((34.3515+3034.9057*T)%360+360)%360,
+    Venus:((181.9798+58517.8156*T)%360+360)%360,
+    Saturn:((50.0774+1222.1138*T)%360+360)%360,
+    Rahu:((125.0445-1934.1363*T)%360+360)%360
+  };
+  tropical.Ketu=(tropical.Rahu+180)%360;
+  const ayan=23.85+0.0136*T;
+  const sidereal={};
+  for(const p of PLANETS)sidereal[p]=((tropical[p]-ayan)+360)%360;
+  return{positions:sidereal,ayanamsa:ayan,T};
+}
+function lonToSign(lon){return{sign:SIGNS[Math.floor(lon/30)%12],degree:lon%30};}
+function getNakshatra(moonLon){
+  const span=360/27,idx=Math.floor(moonLon/span)%27,pos=moonLon%span,pada=Math.min(Math.floor(pos/(span/4))+1,4);
+  return{nakshatra:NAKSHATRAS_LIST[idx],pada,lord:DASHA_ORDER[idx%9]};
+}
+function calcLagna(jd,lat,lon){
+  const T=(jd-2451545.0)/36525,ayan=23.85+0.0136*T;
+  const lst=(100.4606+36000.7700*T+lon)%360;
+  return((lst-ayan)+360)%360;
+}
+function calcDasha(moonLon,dob){
+  const span=360/27,idx=Math.floor(moonLon/span)%27,lordIdx=idx%9,lord=DASHA_ORDER[lordIdx];
+  const pos=moonLon%span,frac=pos/span,birthYears=DASHA_YEARS[lord],elapsed=frac*birthYears;
+  const seq=[];let cursor=new Date(dob);
+  cursor=new Date(cursor.getTime()-elapsed*365.25*86400000);
+  const sIdx=DASHA_ORDER.indexOf(lord);
+  for(let i=0;i<9;i++){
+    const p=DASHA_ORDER[(sIdx+i)%9],yrs=DASHA_YEARS[p];
+    const start=cursor.toISOString().split('T')[0];
+    cursor=new Date(cursor.getTime()+yrs*365.25*86400000);
+    seq.push({planet:p,start,end:cursor.toISOString().split('T')[0],years:yrs});
+  }
+  const today=new Date();
+  const cur=seq.find(d=>new Date(d.start)<=today&&today<=new Date(d.end))||seq[0];
+  const rem=(new Date(cur.end)-today)/(365.25*86400000);
+  return{current:cur.planet,start:cur.start,end:cur.end,remaining:Math.round(rem*10)/10,sequence:seq};
+}
+function detectDoshas(planets){
+  const mars=planets.Mars,saturn=planets.Saturn,moon=planets.Moon,sun=planets.Sun,rahu=planets.Rahu,ketu=planets.Ketu;
+  return{
+    manglik:[1,4,7,8,12].includes(mars.house),
+    shani:saturn.house===moon.house||Math.abs(saturn.house-moon.house)===6,
+    pitru:sun.house===rahu.house||sun.house===ketu.house,
+    kaalSarp:checkKaalSarp(planets)
+  };
+}
+function checkKaalSarp(pl){
+  const rahuH=pl.Rahu.house,ketuH=pl.Ketu.house;
+  const core=['Sun','Moon','Mars','Mercury','Jupiter','Venus','Saturn'];
+  return core.every(p=>pl[p].house>=Math.min(rahuH,ketuH)&&pl[p].house<=Math.max(rahuH,ketuH));
+}
+function detectYogas(planets){
+  const yogas=[],jup=planets.Jupiter,moon=planets.Moon,sun=planets.Sun,mer=planets.Mercury,sat=planets.Saturn,mars=planets.Mars;
+  if([0,3,6,9].includes(Math.abs(jup.house-moon.house)))yogas.push('Gajakesari Yoga');
+  if(sun.house===mer.house)yogas.push('Budh-Aditya Yoga');
+  if([1,4,7,10].includes(mars.house)&&mars.sign==='Aries')yogas.push('Ruchaka Yoga');
+  if([1,4,7,10].includes(jup.house)&&['Sagittarius','Pisces'].includes(jup.sign))yogas.push('Hamsa Yoga');
+  if([2,11].includes(jup.house))yogas.push('Dhana Yoga');
+  if([6,8,12].includes(sat.house)&&[6,8,12].includes(mars.house))yogas.push('Viparita Raja Yoga');
+  return yogas;
+}
+function getStrength(planet,sign,house){
+  let s=50;
+  const own={Sun:['Leo'],Moon:['Cancer'],Mars:['Aries','Scorpio'],Mercury:['Gemini','Virgo'],Jupiter:['Sagittarius','Pisces'],Venus:['Taurus','Libra'],Saturn:['Capricorn','Aquarius'],Rahu:[],Ketu:[]};
+  const exalt={Sun:'Aries',Moon:'Taurus',Mars:'Capricorn',Mercury:'Virgo',Jupiter:'Cancer',Venus:'Pisces',Saturn:'Libra'};
+  const debil={Sun:'Libra',Moon:'Scorpio',Mars:'Cancer',Mercury:'Pisces',Jupiter:'Capricorn',Venus:'Virgo',Saturn:'Aries'};
+  if(own[planet]?.includes(sign))s+=30;
+  if(exalt[planet]===sign)s+=20;
+  if(debil[planet]===sign)s-=20;
+  if([1,4,7,10].includes(house))s+=10;
+  if([5,9].includes(house))s+=8;
+  if([6,8,12].includes(house))s-=10;
+  return Math.max(10,Math.min(100,s));
+}
+
+// ── KUNDLI GENERATE ───────────────────────────────────────────────────────────
+function generateKundli(){
+  const name=document.getElementById('k-name').value.trim();
+  const dob=document.getElementById('k-dob').value;
+  const tob=document.getElementById('k-tob').value||'06:00';
+  const pob=document.getElementById('k-pob').value.trim();
+  const lat=parseFloat(document.getElementById('k-lat').value)||19.07;
+  const lon=parseFloat(document.getElementById('k-lon').value)||72.87;
+  if(!name||!dob){alert('Please enter name and date of birth');return;}
+  const jd=toJD(dob,tob);
+  const{positions}=calcPlanets(jd);
+  const lagnaLon=calcLagna(jd,lat,lon);
+  const lagnaSign=lonToSign(lagnaLon).sign;
+  const lagnaIdx=SIGNS.indexOf(lagnaSign);
+  const planetData={};
+  for(const p of PLANETS){
+    const{sign,degree}=lonToSign(positions[p]);
+    const signIdx=SIGNS.indexOf(sign);
+    const house=((signIdx-lagnaIdx+12)%12)+1;
+    planetData[p]={sign,degree:Math.round(degree*10)/10,house,strength:getStrength(p,sign,house),retrograde:p==='Rahu'||p==='Ketu'};
+  }
+  const{nakshatra,pada,lord:nakLord}=getNakshatra(positions.Moon);
+  const dasha=calcDasha(positions.Moon,dob);
+  const doshas=detectDoshas(planetData);
+  const yogas=detectYogas(planetData);
+  showKundliResult({name,dob,tob,pob,lagna:lagnaSign,planets:planetData,nakshatra,pada,nakLord,dasha,doshas,yogas});
+}
+
+function showKundliResult(d){
+  document.getElementById('kundli-form-section').style.display='none';
+  const rs=document.getElementById('kundli-result-section');
+  rs.style.display='block';
+  const houseMap={};
+  for(const p of PLANETS){const h=d.planets[p].house;if(!houseMap[h])houseMap[h]=[];houseMap[h].push(p);}
+  const doshaHTML=Object.entries(d.doshas).map(([k,v])=>`<span class="tag ${v?'tag-bad':'tag-good'}">${v?'⚠':'✓'} ${k==='manglik'?'Manglik':k==='shani'?'Shani Dosha':k==='pitru'?'Pitru Dosha':'Kaal Sarp'}</span>`).join('');
+  const yogaHTML=d.yogas.length?d.yogas.map(y=>`<span class="tag tag-good">★ ${y}</span>`).join(''):'<span class="tag tag-neutral">No major yogas detected</span>';
+  rs.innerHTML=`
+  <button onclick="resetKundli()" style="margin-bottom:16px;padding:8px 16px;border:1.5px solid var(--border);border-radius:8px;background:var(--surface);font-size:13px;cursor:pointer">← New Chart</button>
+  <div class="card" style="margin-bottom:16px">
+    <div class="result-header">
+      <div><h2 class="result-title">${d.name}</h2><div class="result-meta">${d.dob} · ${d.tob||''} · ${d.pob||''}</div></div>
+      <div style="text-align:right"><div style="font-size:13px;color:var(--text2)">Lagna</div><div style="font-family:'DM Serif Display',serif;font-size:20px">${d.lagna}</div></div>
+    </div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px">
+      <div style="background:var(--bg2);border-radius:8px;padding:10px 16px"><div style="font-size:11px;color:var(--text2)">Moon Sign</div><div style="font-weight:500">${d.planets.Moon.sign}</div></div>
+      <div style="background:var(--bg2);border-radius:8px;padding:10px 16px"><div style="font-size:11px;color:var(--text2)">Sun Sign</div><div style="font-weight:500">${d.planets.Sun.sign}</div></div>
+      <div style="background:var(--bg2);border-radius:8px;padding:10px 16px"><div style="font-size:11px;color:var(--text2)">Nakshatra</div><div style="font-weight:500">${d.nakshatra} (Pada ${d.pada})</div></div>
+      <div style="background:var(--bg2);border-radius:8px;padding:10px 16px"><div style="font-size:11px;color:var(--text2)">Current Dasha</div><div style="font-weight:500">${d.dasha.current} (${d.dasha.remaining} yrs left)</div></div>
+    </div>
+  </div>
+  <div class="tab-row">
+    <button class="tab-btn active" onclick="switchKTab(0,this)">Planets</button>
+    <button class="tab-btn" onclick="switchKTab(1,this)">Chart</button>
+    <button class="tab-btn" onclick="switchKTab(2,this)">Dasha</button>
+    <button class="tab-btn" onclick="switchKTab(3,this)">Doshas & Yogas</button>
+  </div>
+  <div id="k-tabs">
+    <div id="ktab-0">
+      <div class="card">
+        <div class="section-label">Planetary Positions</div>
+        <table class="planet-table">
+          <thead><tr><th>Planet</th><th>Sign</th><th>House</th><th>Degree</th><th>Strength</th></tr></thead>
+          <tbody>${PLANETS.map(p=>`<tr><td><b>${PLANET_SYMBOLS[p]||''} ${p}</b>${d.planets[p].retrograde?' <span style="color:var(--red);font-size:11px">(R)</span>':''}</td><td>${d.planets[p].sign}</td><td>${d.planets[p].house}</td><td>${d.planets[p].degree}°</td><td><div class="strength-bar"><div class="strength-fill" style="width:${d.planets[p].strength}%"></div></div> <span style="font-size:12px;color:var(--text2)">${d.planets[p].strength}%</span></td></tr>`).join('')}</tbody>
+        </table>
+      </div>
+    </div>
+    <div id="ktab-1" style="display:none">
+      <div class="card">
+        <div class="section-label">North Indian Chart</div>
+        ${renderNorthChart(d.lagna,houseMap,d.planets)}
+      </div>
+    </div>
+    <div id="ktab-2" style="display:none">
+      <div class="card">
+        <div class="section-label">Vimshottari Dasha Sequence</div>
+        ${d.dasha.sequence.map((ds,i)=>{
+          const isCur=ds.planet===d.dasha.current;
+          return`<div class="dasha-card ${isCur?'dasha-current':''}"><div class="dasha-label">${isCur?'▶ Current Mahadasha':'Mahadasha'}</div><div class="dasha-planet">${ds.planet} ${isCur?`<span style="font-size:14px;color:var(--green)">· ${d.dasha.remaining} yrs remaining</span>`:''}</div><div class="dasha-dates">${ds.start} → ${ds.end} (${ds.years} years)</div></div>`;
+        }).join('')}
+      </div>
+    </div>
+    <div id="ktab-3" style="display:none">
+      <div class="card" style="margin-bottom:16px">
+        <div class="section-label">Doshas</div>
+        <div>${doshaHTML}</div>
+        ${d.doshas.manglik?'<p style="font-size:13px;color:var(--text2);margin-top:12px">⚠ Manglik Dosha: Mars in house '+d.planets.Mars.house+'. This can be remedied through proper muhurat and ritual.</p>':'<p style="font-size:13px;color:var(--text2);margin-top:12px">✓ No major doshas detected in this chart.</p>'}
+      </div>
+      <div class="card">
+        <div class="section-label">Yogas</div>
+        <div class="yoga-list">${yogaHTML}</div>
+        <p style="font-size:13px;color:var(--text2);margin-top:12px">${d.yogas.length>0?`${d.yogas.length} auspicious yoga${d.yogas.length>1?'s':''} found in this chart.`:'Consult an astrologer for detailed yoga analysis.'}</p>
+      </div>
+    </div>
+  </div>`;
+}
+
+function switchKTab(idx,btn){
+  for(let i=0;i<4;i++){const t=document.getElementById('ktab-'+i);if(t)t.style.display=i===idx?'block':'none';}
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function resetKundli(){
+  document.getElementById('kundli-form-section').style.display='block';
+  document.getElementById('kundli-result-section').style.display='none';
+  document.getElementById('kundli-result-section').innerHTML='';
+}
+
+function renderNorthChart(lagna,houseMap,planets){
+  const lagnaIdx=SIGNS.indexOf(lagna);
+  const cells=Array(16).fill(null);
+  // North Indian layout positions: house -> cell index
+  const housePos=[null,0,1,2,3,7,11,15,14,13,12,8,4]; // 1-indexed
+  const cellHouse={};
+  for(let h=1;h<=12;h++)if(housePos[h]!==undefined){cellHouse[housePos[h]]=h;}
+  let html='<div style="display:grid;grid-template-columns:repeat(4,1fr);border:2px solid var(--border);border-radius:8px;overflow:hidden;max-width:340px">';
+  for(let i=0;i<16;i++){
+    const h=cellHouse[i];
+    const isEmpty=!h;
+    const sign=h?SIGNS[(lagnaIdx+h-1)%12]:'';
+    const ps=h&&houseMap[h]?houseMap[h].map(p=>`<span class="planet-tag ${planets[p]?.retrograde?'retro':''}">${p.substring(0,3)}</span>`).join(''):'';
+    if(isEmpty){html+=`<div style="background:var(--bg2);border:1px solid var(--border);min-height:70px"></div>`;}
+    else{html+=`<div style="border:1px solid var(--border);min-height:70px;padding:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center"><div style="font-size:10px;color:var(--text2)">${sign}</div><div style="font-size:9px;color:var(--accent);font-weight:600">H${h}</div><div style="display:flex;flex-wrap:wrap;justify-content:center;gap:1px;margin-top:2px">${ps}</div></div>`;}
+  }
+  html+='</div>';
+  return html;
+}
+
+// ── HOROSCOPE ─────────────────────────────────────────────────────────────────
+const HOROSCOPE_DATA={
+  Aries:{prediction:"Today brings fresh energy and initiative. Ganesha smiles upon your efforts. Take bold steps in career matters. Avoid confrontations in the afternoon. Lucky color: Red.",career:7.5,love:6,health:8,finance:6.5,overall:7},
+  Taurus:{prediction:"Financial matters look promising. A pending payment may arrive. Relationships need patience and understanding today. Focus on health—avoid rich foods. Lucky color: Green.",career:6,love:7,health:6,finance:8.5,overall:7},
+  Gemini:{prediction:"Communication is your strength today. Networking opens new doors. Mercury's influence brings clarity of thought. A sibling may need your attention. Lucky color: Yellow.",career:8,love:7,health:6.5,finance:7,overall:7.5},
+  Cancer:{prediction:"Home and family take center stage. Moon's position brings emotional sensitivity—channel this into creativity. Avoid major decisions after 3 PM. Lucky color: Silver.",career:6,love:8.5,health:7,finance:6,overall:7},
+  Leo:{prediction:"Leadership opportunities arise. Your charisma is at its peak—use it wisely. Sun blesses your endeavors. Avoid ego clashes with seniors. Lucky color: Gold.",career:8.5,love:7,health:7.5,finance:7,overall:7.5},
+  Virgo:{prediction:"Details matter today—review contracts carefully. Mercury brings analytical clarity. Health routines pay dividends. A helpful stranger may guide you. Lucky color: Navy blue.",career:7,love:6,health:8,finance:7.5,overall:7},
+  Libra:{prediction:"Balance in all things. Venus blesses relationships and aesthetics. Business partnerships flourish. Avoid overcommitting. Lucky color: Pink.",career:7,love:8.5,health:6.5,finance:7,overall:7.5},
+  Scorpio:{prediction:"Deep insights emerge. Trust your intuition—it won't mislead you today. Mars gives determination. Hidden opportunities surface. Lucky color: Maroon.",career:7.5,love:7,health:7,finance:8,overall:7.5},
+  Sagittarius:{prediction:"Expansion and optimism define your day. Jupiter's blessing brings fortunate encounters. Travel plans may materialize. Share your wisdom freely. Lucky color: Purple.",career:8,love:7,health:8,finance:7,overall:7.5},
+  Capricorn:{prediction:"Hard work bears fruit today. Saturn rewards patience and discipline. Avoid shortcuts. Professional recognition is near. Lucky color: Black.",career:8.5,love:6,health:6.5,finance:8,overall:7.5},
+  Aquarius:{prediction:"Innovation and originality shine. Unconventional solutions work best. Friendships bring unexpected gifts. Technology-related matters go smoothly. Lucky color: Turquoise.",career:7.5,love:7,health:7,finance:6.5,overall:7},
+  Pisces:{prediction:"Spiritual and creative energies are high. Neptune's influence deepens intuition. Artistic pursuits are favored. Guard against deception in finances. Lucky color: Sea green.",career:6.5,love:8,health:7,finance:6,overall:7}
+};
+
+function initRashiGrid(){
+  const g=document.getElementById('rashi-grid');
+  g.innerHTML=RASHIS.map((r,i)=>`<div class="rashi-btn" onclick="showHoroscope(${i},this)"><div class="rashi-icon">${r.icon}</div><div class="rashi-name">${r.name}</div><div style="font-size:10px;color:var(--text2);margin-top:1px;font-family:'Noto Sans Devanagari',sans-serif">${r.hindi}</div></div>`).join('');
+}
+
+function showHoroscope(idx,btn){
+  document.querySelectorAll('.rashi-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const rashi=RASHIS[idx],hd=HOROSCOPE_DATA[rashi.name];
+  const today=new Date().toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  document.getElementById('horoscope-result').innerHTML=`
+  <div class="horoscope-result">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+      <div style="font-size:36px">${rashi.icon}</div>
+      <div><h3 style="font-size:20px">${rashi.name} <span style="font-family:'Noto Sans Devanagari',sans-serif;font-size:16px;color:var(--text2)">${rashi.hindi}</span></h3><div style="font-size:12px;color:var(--text2)">${today} · Ruled by ${rashi.lord}</div></div>
+      <div style="margin-left:auto;text-align:center"><div style="font-family:'DM Serif Display',serif;font-size:32px;color:var(--accent)">${hd.overall}</div><div style="font-size:11px;color:var(--text2)">Overall</div></div>
+    </div>
+    <p style="font-size:14px;line-height:1.7;color:var(--text2);margin-bottom:16px">${hd.prediction}</p>
+    <div class="score-row">
+      ${[['Career','career'],['Love','love'],['Health','health'],['Finance','finance']].map(([k,v])=>`<div class="score-chip"><div class="score-val">${hd[v]}</div><div class="score-key">${k}</div></div>`).join('')}
+    </div>
+    <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:13px;color:var(--text2)">
+      <b style="color:var(--text)">Remedies:</b> Chant ${rashi.lord === 'Sun' ? 'Surya Mantra' : rashi.lord === 'Moon' ? 'Chandra Mantra' : rashi.lord === 'Mars' ? 'Mangal Mantra' : rashi.lord === 'Mercury' ? 'Budha Mantra' : rashi.lord === 'Jupiter' ? 'Guru Mantra' : rashi.lord === 'Venus' ? 'Shukra Mantra' : 'Shani Mantra'} 108 times at sunrise. Donate ${rashi.lord === 'Saturn' ? 'sesame seeds' : rashi.lord === 'Jupiter' ? 'yellow sweets' : rashi.lord === 'Mars' ? 'red lentils' : 'jaggery'} to the needy.
+    </div>
+  </div>`;
+}
+
+// ── KUNDLI MATCHING ───────────────────────────────────────────────────────────
+const GUNAS=[
+  {name:'Varna',max:1,desc:'Spiritual compatibility'},
+  {name:'Vashya',max:2,desc:'Dominance & control'},
+  {name:'Tara',max:3,desc:'Birth star compatibility'},
+  {name:'Yoni',max:4,desc:'Nature & instincts'},
+  {name:'Graha Maitri',max:5,desc:'Planetary friendship'},
+  {name:'Gana',max:6,desc:'Temperament'},
+  {name:'Bhakoot',max:7,desc:'Love & prosperity'},
+  {name:'Nadi',max:8,desc:'Health & progeny'}
+];
+
+function initNakshatraSelects(){
+  const opts=NAKSHATRAS_LIST.map((n,i)=>`<option value="${i}">${n}</option>`).join('');
+  document.getElementById('m-boy-nak').innerHTML='<option value="">Select Nakshatra</option>'+opts;
+  document.getElementById('m-girl-nak').innerHTML='<option value="">Select Nakshatra</option>'+opts;
+}
+
+function calculateMatching(){
+  const bn=document.getElementById('m-boy-name').value||'Boy';
+  const gn=document.getElementById('m-girl-name').value||'Girl';
+  const bNak=parseInt(document.getElementById('m-boy-nak').value);
+  const gNak=parseInt(document.getElementById('m-girl-nak').value);
+  if(isNaN(bNak)||isNaN(gNak)){alert('Please select both Nakshatras');return;}
+  // Calculate guna scores based on nakshatra indices
+  const diff=Math.abs(bNak-gNak);
+  const scores=GUNAS.map((g,i)=>{
+    let score=Math.round((Math.sin((diff+i)*0.7+i)*0.5+0.5)*g.max);
+    score=Math.max(0,Math.min(g.max,score));
+    return{...g,score};
+  });
+  const total=scores.reduce((a,b)=>a+b.score,0);
+  const maxTotal=36;
+  const pct=Math.round(total/maxTotal*100);
+  const verdict=total>=28?'Excellent Match':total>=21?'Good Match':total>=18?'Average Match':'Needs Careful Consideration';
+  const verdictColor=total>=28?'var(--green)':total>=21?'var(--accent)':total>=18?'#e65100':'var(--red)';
+  document.getElementById('matching-result').innerHTML=`
+  <div class="match-result">
+    <div class="match-score-circle" style="border-color:${verdictColor}">
+      <div class="score" style="color:${verdictColor}">${total}</div>
+      <div class="label">out of 36</div>
+    </div>
+    <h3 style="text-align:center;color:${verdictColor};margin-bottom:4px">${verdict}</h3>
+    <p style="text-align:center;font-size:13px;color:var(--text2);margin-bottom:20px">${bn} & ${gn} — ${pct}% compatibility</p>
+    ${scores.map(g=>`
+    <div class="guna-bar">
+      <div class="guna-name"><span>${g.name} <span style="font-size:11px;color:var(--text2)">— ${g.desc}</span></span><span>${g.score}/${g.max}</span></div>
+      <div class="guna-track"><div class="guna-fill" style="width:${g.score/g.max*100}%;background:${g.score/g.max>0.6?'var(--green)':g.score/g.max>0.3?'var(--accent)':'var(--red)'}"></div></div>
+    </div>`).join('')}
+    <div style="margin-top:16px;padding:14px;background:var(--bg2);border-radius:10px;font-size:13px;color:var(--text2)">
+      <b style="color:var(--text)">Note:</b> Kundli matching is one factor in marriage compatibility. Consult a qualified Jyotishi for a complete analysis including charts, doshas and muhurat.
+    </div>
+  </div>`;
+}
+
+// ── PANCHANG ──────────────────────────────────────────────────────────────────
+const TITHIS=['Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Purnima/Amavasya'];
+const YOGAS_LIST=['Vishkumbha','Preeti','Ayushman','Saubhagya','Shobhana','Atiganda','Sukarma','Dhriti','Shoola','Ganda','Vriddhi','Dhruva','Vyaghata','Harshana','Vajra','Siddhi','Vyatipata','Variyana','Parigha','Shiva','Siddha','Sadhya','Shubha','Shukla','Brahma','Indra','Vaidhriti'];
+const KARANAS=['Bava','Balava','Kaulava','Taitila','Garaja','Vanija','Vishti','Shakuni','Chatushpada','Nagava','Kimstughna'];
+const MUHURAT_NAMES=['Abhijit','Brahma','Vijaya','Nishita','Godhuli','Amrit Siddhi','Sarvartha Siddhi'];
+
+function updatePanchang(){
+  const input=document.getElementById('panchang-date-input');
+  const dateStr=input.value||new Date().toISOString().split('T')[0];
+  const date=new Date(dateStr);
+  const jd=toJD(dateStr,'12:00');
+  const{positions}=calcPlanets(jd);
+  const T=(jd-2451545.0)/36525;
+  const moonLon=positions.Moon;
+  const sunLon=positions.Sun;
+  const tithiAngle=((moonLon-sunLon)+360)%360;
+  const tithiNum=Math.floor(tithiAngle/12)%15;
+  const paksha=tithiAngle<180?'Shukla Paksha':'Krishna Paksha';
+  const{nakshatra}=getNakshatra(moonLon);
+  const yogaIdx=Math.floor((moonLon+sunLon)/360*27)%27;
+  const karanaIdx=Math.floor(tithiAngle/6)%11;
+  const weekday=date.toLocaleDateString('en-IN',{weekday:'long'});
+  const vara=weekday;
+  document.getElementById('panchang-date').textContent=date.toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  // Generate muhurats
+  const muhurats=MUHURAT_NAMES.map((m,i)=>{
+    const h=6+i*2,type=i%3===0?'good':i%3===1?'ok':'avoid';
+    return{name:m,time:`${String(h).padStart(2,'0')}:${i%2===0?'00':'24'} - ${String(h+1).padStart(2,'0')}:${i%2===0?'36':'00'}`,type};
+  });
+  document.getElementById('panchang-content').innerHTML=`
+  <div class="panchang-grid">
+    <div class="panchang-item"><div class="panchang-key">Tithi</div><div class="panchang-val">${TITHIS[tithiNum]} (${paksha})</div></div>
+    <div class="panchang-item"><div class="panchang-key">Vara (Day)</div><div class="panchang-val">${vara}</div></div>
+    <div class="panchang-item"><div class="panchang-key">Nakshatra</div><div class="panchang-val">${nakshatra}</div></div>
+    <div class="panchang-item"><div class="panchang-key">Yoga</div><div class="panchang-val">${YOGAS_LIST[yogaIdx]}</div></div>
+    <div class="panchang-item"><div class="panchang-key">Karana</div><div class="panchang-val">${KARANAS[karanaIdx]}</div></div>
+    <div class="panchang-item"><div class="panchang-key">Paksha</div><div class="panchang-val">${paksha}</div></div>
+    <div class="panchang-item"><div class="panchang-key">Sun in</div><div class="panchang-val">${lonToSign(sunLon).sign}</div></div>
+    <div class="panchang-item"><div class="panchang-key">Moon in</div><div class="panchang-val">${lonToSign(moonLon).sign}</div></div>
+  </div>
+  <hr class="divider"/>
+  <div class="section-label">Today's Muhurats</div>
+  <div class="muhurat-list">
+    ${muhurats.map(m=>`<div class="muhurat-item"><div><div class="muhurat-name">${m.name}</div><div style="font-size:12px;color:var(--text2)">Approx IST</div></div><div style="display:flex;align-items:center;gap:10px"><span style="font-size:13px">${m.time}</span><span class="muhurat-badge ${m.type==='good'?'badge-good':m.type==='avoid'?'badge-avoid':'badge-ok'}">${m.type==='good'?'Auspicious':m.type==='avoid'?'Avoid':'Neutral'}</span></div></div>`).join('')}
+  </div>`;
+}
+
+// ── NUMEROLOGY ────────────────────────────────────────────────────────────────
+function reduceNum(n){while(n>9&&n!==11&&n!==22&&n!==33)n=String(n).split('').reduce((a,b)=>a+parseInt(b),0);return n;}
+function nameToNum(name){
+  const pythagorean={'a':1,'b':2,'c':3,'d':4,'e':5,'f':6,'g':7,'h':8,'i':9,'j':1,'k':2,'l':3,'m':4,'n':5,'o':6,'p':7,'q':8,'r':9,'s':1,'t':2,'u':3,'v':4,'w':5,'x':6,'y':7,'z':8};
+  return name.toLowerCase().replace(/[^a-z]/g,'').split('').reduce((a,c)=>a+(pythagorean[c]||0),0);
+}
+function getVowelNum(name){
+  const pythagorean={'a':1,'e':5,'i':9,'o':6,'u':3};
+  return name.toLowerCase().replace(/[^aeiou]/g,'').split('').reduce((a,c)=>a+(pythagorean[c]||0),0);
+}
+const NUM_MEANINGS={1:'The Leader — Independent, ambitious, self-reliant. Born to lead and innovate.',2:'The Diplomat — Cooperative, sensitive, intuitive. Gift for harmony and balance.',3:'The Communicator — Creative, expressive, joyful. Natural entertainer and artist.',4:'The Builder — Practical, disciplined, hardworking. Foundation of stability.',5:'The Freedom Seeker — Adventurous, versatile, curious. Thrives on change.',6:'The Nurturer — Loving, responsible, caring. Natural healer and protector.',7:'The Mystic — Analytical, introspective, spiritual. Seeker of truth.',8:'The Powerhouse — Ambitious, authoritative, successful. Mastery over material world.',9:'The Humanitarian — Compassionate, generous, wise. Here to serve humanity.',11:'The Intuitive — Highly spiritual, inspirational master number.',22:'The Master Builder — Turns dreams into reality on a grand scale.',33:'The Master Teacher — Devoted to uplifting humanity.'};
+
+function calculateNumerology(){
+  const name=document.getElementById('n-name').value.trim();
+  const dob=document.getElementById('n-dob').value;
+  if(!name||!dob){alert('Please enter name and date of birth');return;}
+  const dobDigits=dob.replace(/-/g,'').split('').reduce((a,b)=>a+parseInt(b),0);
+  const lifePath=reduceNum(dobDigits);
+  const destinyRaw=nameToNum(name);
+  const destiny=reduceNum(destinyRaw);
+  const soulRaw=getVowelNum(name);
+  const soul=reduceNum(soulRaw);
+  const personality=reduceNum(destinyRaw-soulRaw);
+  const lucky=reduceNum(lifePath+destiny);
+  document.getElementById('numerology-result').innerHTML=`
+  <div class="num-display">
+    <div class="num-circle">${lifePath}</div>
+    <div class="num-name">Life Path Number ${lifePath}</div>
+    <div class="num-sub">${NUM_MEANINGS[lifePath]||'A powerful number with deep significance.'}</div>
+  </div>
+  <div class="num-grid">
+    <div class="num-item"><div class="n">${destiny}</div><div class="k">Destiny Number</div></div>
+    <div class="num-item"><div class="n">${soul}</div><div class="k">Soul Urge</div></div>
+    <div class="num-item"><div class="n">${personality}</div><div class="k">Personality</div></div>
+    <div class="num-item"><div class="n">${lucky}</div><div class="k">Lucky Number</div></div>
+    <div class="num-item"><div class="n">${reduceNum(new Date().getFullYear())}</div><div class="k">Personal Year</div></div>
+    <div class="num-item"><div class="n">${reduceNum(lifePath+new Date().getMonth()+1)}</div><div class="k">Personal Month</div></div>
+  </div>
+  <div style="margin-top:16px;padding:14px;background:var(--bg2);border-radius:10px;font-size:13px;color:var(--text2)">
+    <b style="color:var(--text)">Destiny:</b> ${NUM_MEANINGS[destiny]||'Your path is unique and powerful.'}<br/><br/>
+    <b style="color:var(--text)">Soul Urge:</b> ${NUM_MEANINGS[soul]||'Your inner desires drive your choices.'}
+  </div>`;
+}
+
+// ── AI CHAT ───────────────────────────────────────────────────────────────────
+const SYSTEM_PROMPT=`You are Jyotish AI, an expert Vedic astrologer with deep knowledge of:
+- Vedic/Jyotish astrology (Parashari, Jaimini)
+- The 9 planets (Navagraha), 12 rashis, 27 nakshatras, 12 houses
+- Vimshottari Dasha system
+- Doshas: Manglik, Kaal Sarp, Shani, Pitru
+- Yogas: Gajakesari, Raj Yoga, Dhana Yoga, etc.
+- Muhurat (auspicious timing)
+- Panchang (Tithi, Vara, Nakshatra, Yoga, Karana)
+- Western astrology basics
+- Numerology (Pythagorean and Chaldean)
+- Remedies: mantras, gemstones, rituals, donations
+
+Respond in a warm, knowledgeable tone. Mix English with occasional Sanskrit/Hindi terms. 
+Keep answers practical and helpful. For personal chart questions, ask for birth details (date, time, place).
+End with an encouraging note when appropriate. Keep responses concise (3-5 sentences unless detail is needed).`;
+
+let chatHistory=[];
+
+async function sendChat(){
+  const input=document.getElementById('chat-input');
+  const msg=input.value.trim();
+  if(!msg)return;
+  input.value='';
+  document.getElementById('quick-questions').style.display='none';
+  appendMsg(msg,'user');
+  const typing=appendTyping();
+  chatHistory.push({role:'user',content:msg});
+  try{
+    const response=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:SYSTEM_PROMPT,
+        messages:chatHistory.slice(-10)
+      })
+    });
+    const data=await response.json();
+    typing.remove();
+    const reply=data.content?.[0]?.text||"I apologize, I couldn't connect right now. Please try again.";
+    chatHistory.push({role:'assistant',content:reply});
+    appendMsg(reply,'bot');
+  }catch(e){
+    typing.remove();
+    appendMsg("Namaste! I'm having trouble connecting right now. Please check your connection and try again. 🙏",'bot');
+  }
+}
+
+function sendQuickQ(btn){
+  document.getElementById('chat-input').value=btn.textContent;
+  sendChat();
+}
+
+function appendMsg(text,role){
+  const msgs=document.getElementById('chat-messages');
+  const time=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  const div=document.createElement('div');
+  div.className=`msg ${role}`;
+  div.innerHTML=`<div class="msg-bubble">${text.replace(/\n/g,'<br/>')}</div><div class="msg-time">${time}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop=msgs.scrollHeight;
+  return div;
+}
+
+function appendTyping(){
+  const msgs=document.getElementById('chat-messages');
+  const div=document.createElement('div');
+  div.className='msg bot';
+  div.innerHTML='<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+  msgs.appendChild(div);
+  msgs.scrollTop=msgs.scrollHeight;
+  return div;
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+initRashiGrid();
+initNakshatraSelects();
+const today=new Date().toISOString().split('T')[0];
+document.getElementById('panchang-date-input').value=today;
+updatePanchang();
+</script>
+</body>
+</html>
